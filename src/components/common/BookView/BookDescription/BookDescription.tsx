@@ -20,9 +20,7 @@ function BookDescription({ content, className, ...props }: Props) {
     ];
     const annotation = titleInfo.find((i) => Object.keys(i)[0] === 'annotation')?.['annotation'];
     const coverPage = titleInfo.find((i) => Object.keys(i)[0] === 'coverpage')?.['coverpage'];
-    const date = titleInfo.find((i) => Object.keys(i)[0] === 'date')?.['date'][0]['#text'];
-
-    console.log('annotation', annotation);
+    const date = titleInfo.find((i) => Object.keys(i)[0] === 'date')?.['date'][0]?.['#text'];
 
     const authors = titleInfo
       .filter((i) => Object.keys(i)[0] === 'author')
@@ -43,8 +41,6 @@ function BookDescription({ content, className, ...props }: Props) {
         });
         return result;
       });
-
-    console.log(authors);
 
     return {
       titleInfo: {

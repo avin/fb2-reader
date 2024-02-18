@@ -4,10 +4,10 @@ import cn from 'clsx';
 import { debounce } from 'lodash-es';
 import BookDescription from '@/components/common/BookView/BookDescription/BookDescription.tsx';
 import BookProvider from '@/components/common/BookView/BookProvider/BookProvider.tsx';
+import config from '@/config.ts';
 import { FB2 } from '@/utils/fb2/FB2.ts';
 import styles from './BookView.module.scss';
 import FormattedContent from './FormattedContent/FormattedContent.tsx';
-import config from '@/config.ts';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
   content: string;
@@ -40,13 +40,16 @@ function BookView({ content, className, ...props }: Props) {
       });
 
       if (closestElement) {
-        console.log(closestElement);
+        // console.log(closestElement);
         // TODO: записать признак элемента в сторадж
       }
     }, 300);
 
-    // Слушатель события скролла
     window.addEventListener('scroll', fixTopElement);
+
+    return () => {
+      window.removeEventListener('scroll', fixTopElement);
+    };
   });
 
   if (!book) {
@@ -55,7 +58,7 @@ function BookView({ content, className, ...props }: Props) {
 
   return (
     <BookProvider book={book}>
-      <div className={cn(styles.book, className, {debug: config.debug})} id="book" {...props}>
+      <div className={cn(styles.book, className, { debug: config.debug })} id="book" {...props}>
         {book.map((item, idx) => {
           const tag = Object.keys(item)[0];
           if (tag === 'description') {

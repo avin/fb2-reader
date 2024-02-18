@@ -17,12 +17,8 @@ export class FB2 {
     return obj[1].FictionBook;
   }
 
-  getTag(item){
-    return
-  }
-
   async loadExample() {
-    const response = await fetch('./examples/book2.fb2');
+    const response = await fetch('./examples/book9.fb2');
     if (!response.ok) {
       throw new Error('Failed to load the book');
     }
