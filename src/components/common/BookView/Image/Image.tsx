@@ -7,7 +7,11 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 function getImageSrcFromBook(book: any, attributes: any) {
-  const id = attributes['@_xlink:href'].replace(/^#/, '');
+  const hrefKey = Object.keys(attributes).find((i) => i.endsWith(':href'));
+  if (!hrefKey) {
+    return null;
+  }
+  const id = attributes[hrefKey].replace(/^#/, '');
   const binObj = book.find((i) => {
     return i.binary && i[':@']?.['@_id'] === id;
   });
