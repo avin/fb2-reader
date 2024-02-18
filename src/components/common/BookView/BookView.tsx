@@ -7,6 +7,7 @@ import BookProvider from '@/components/common/BookView/BookProvider/BookProvider
 import { FB2 } from '@/utils/fb2/FB2.ts';
 import styles from './BookView.module.scss';
 import FormattedContent from './FormattedContent/FormattedContent.tsx';
+import config from '@/config.ts';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
   content: string;
@@ -54,12 +55,12 @@ function BookView({ content, className, ...props }: Props) {
 
   return (
     <BookProvider book={book}>
-      <div className={cn(styles.book, className)} id="book" {...props}>
+      <div className={cn(styles.book, className, {debug: config.debug})} id="book" {...props}>
         {book.map((item, idx) => {
           const tag = Object.keys(item)[0];
           if (tag === 'description') {
             return (
-              <div className={styles.body} key={idx}>
+              <div className={styles.bookDescription} key={idx}>
                 <BookDescription key={idx} content={item[tag]} />
               </div>
             );

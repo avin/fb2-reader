@@ -11,3 +11,13 @@
   outline: 2px solid rgba(#000, 0.75);
   outline-offset: $offset;
 }
+
+@mixin padding-y($val) {
+  padding-top: $val;
+  padding-bottom: $val;
+}
+
+@mixin padding-x($val) {
+  padding-right: $val;
+  padding-left: $val;
+}

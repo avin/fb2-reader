@@ -3,6 +3,7 @@ import { useBookProvider } from '@/components/common/BookView/BookProvider/useBo
 import Image from '@/components/common/BookView/Image/Image.tsx';
 import styles from './FormattedContent.module.scss';
 
+
 interface Props {
   content: any[0];
 }
@@ -45,6 +46,10 @@ function FormattedContent({ content }: Props) {
           'text-author': {
             component: 'div',
             className: styles.textAuthor,
+          },
+          subtitle: {
+            component: 'div',
+            className: styles.subtitle,
           },
           strong: {
             component: 'strong',

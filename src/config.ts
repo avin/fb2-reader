@@ -4,6 +4,7 @@ import { deepMixInObject } from '@/utils/mixInObject.ts';
 export class Config {
   defaultLanguage: Language = 'en';
   availableLanguages: Language[] = ['ru', 'en'];
+  debug = false;
 
   extendConfig(newConfigParams: Partial<Config>): void {
     Object.assign(this, deepMixInObject<Config>(newConfigParams, this));

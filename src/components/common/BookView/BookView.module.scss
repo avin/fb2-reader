@@ -1,13 +1,35 @@
 @import '@/styles/mixins';
 
 .book {
-  * + * {
-    margin-top: 10px;
+  &:global(.debug) {
+    * + * {
+      margin-top: 10px;
+    }
+
+    * {
+      padding: 10px;
+      border: 1px solid black;
+    }
+  }
+}
+
+.bookDescription {
+  margin-bottom: 100px;
+  padding: 20px;
+  padding-bottom: 100px;
+  border-bottom: 1px solid #999;
+
+  :global(.debug) & {
+    border: 1px solid black;
+    background-color: #f5b0d8;
   }
 }
 
 .body {
-  padding: 10px;
-  border: 1px solid black;
-  background-color: lightgoldenrodyellow;
+  padding: 20px;
+
+  :global(.debug) & {
+    border: 1px solid black;
+    background-color: lightgoldenrodyellow;
+  }
 }

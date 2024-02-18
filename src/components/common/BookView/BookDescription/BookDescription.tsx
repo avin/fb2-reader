@@ -60,7 +60,6 @@ function BookDescription({ content, className, ...props }: Props) {
 
   return (
     <div className={cn(className)} {...props}>
-      ~~BookDescription~~
       <div>
         <div>
           <b>Genres:</b> {data.titleInfo.genres.join(', ')}
