@@ -87,7 +87,7 @@ class FB2Parser {
 
     const titleNode = sectionNode.querySelector('title');
     if (titleNode) {
-      section.title = titleNode.textContent;
+      section.title = titleNode.innerHTML;
     }
 
     sectionNode.childNodes.forEach((node) => {
@@ -95,7 +95,7 @@ class FB2Parser {
         const element = node as Element;
         switch (element.tagName.toLowerCase()) {
           case 'p':
-            section.content.push({ type: 'paragraph', text: element.textContent || '' });
+            section.content.push({ type: 'paragraph', text: element.innerHTML || '' });
             break;
           case 'image':
             section.content.push({ type: 'image', href: element.getAttribute('xlink:href') || '' });

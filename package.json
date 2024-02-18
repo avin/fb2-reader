@@ -13,10 +13,12 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
+    "@types/dompurify": "^3.0.5",
     "@types/jquery": "^3.5.29",
     "@types/lodash-es": "^4.17.12",
     "clsx": "^2.1.0",
     "defu": "^6.1.4",
+    "dompurify": "^3.0.8",
     "include-media": "^2.0.0",
     "jquery": "^3.7.1",
     "lodash-es": "^4.17.21",

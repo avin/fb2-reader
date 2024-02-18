@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cn from 'clsx';
+import FormattedContent from '@/components/common/BookView/FormattedContent/FormattedContent.tsx';
 import { FB2 } from '@/utils/fb2/FB2.ts';
 import { Book } from '@/utils/fb2/FB2Parser.ts';
 import styles from './BookView.module.scss';
@@ -30,14 +31,22 @@ function BookView({ content, className, ...props }: Props) {
             {body.sections.map((section, idx) => {
               return (
                 <div className={styles.section} key={String(idx)}>
-                  <div className={styles.title}>{section.title}</div>
+                  {section.title && (
+                    <FormattedContent className={styles.title} content={section.title} />
+                  )}
+
                   {section.content.map((contentItem, idx) => {
                     return (
                       <div key={String(idx)}>
                         {(() => {
                           switch (contentItem.type) {
                             case 'paragraph': {
-                              return <div className={styles.paragraph}>{contentItem.text}</div>;
+                              return (
+                                <FormattedContent
+                                  className={styles.paragraph}
+                                  content={contentItem.text}
+                                />
+                              );
                             }
                             case 'image': {
                               return (
