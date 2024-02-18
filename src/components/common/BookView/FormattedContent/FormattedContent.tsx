@@ -1,5 +1,6 @@
 import React from 'react';
-import cn from 'clsx';
+import { useBookProvider } from '@/components/common/BookView/BookProvider/useBookProvider.ts';
+import Image from '@/components/common/BookView/Image/Image.tsx';
 import styles from './FormattedContent.module.scss';
 
 interface Props {
@@ -29,6 +30,22 @@ function FormattedContent({ content }: Props) {
             component: 'div',
             className: styles.epigraph,
           },
+          poem: {
+            component: 'div',
+            className: styles.poem,
+          },
+          stanza: {
+            component: 'div',
+            className: styles.stanza,
+          },
+          v: {
+            component: 'div',
+            className: styles.v,
+          },
+          'text-author': {
+            component: 'div',
+            className: styles.textAuthor,
+          },
           strong: {
             component: 'strong',
           },
@@ -48,6 +65,9 @@ function FormattedContent({ content }: Props) {
 
         if (tag === 'empty-line') {
           return <br key={idx} />;
+        }
+        if (tag === 'image') {
+          return <Image key={idx} attributes={item[':@']} className={styles.image} />;
         }
         if (tag === '#text') {
           return <React.Fragment key={idx}>{item[tag]}</React.Fragment>;

@@ -12,7 +12,7 @@ export class FB2 {
 
     const obj = parser.parse(content);
 
-    console.log(obj);
+    // console.log(JSON.stringify(obj));
 
     return obj[1].FictionBook;
   }
@@ -22,7 +22,7 @@ export class FB2 {
   }
 
   async loadExample() {
-    const response = await fetch('./examples/book.fb2');
+    const response = await fetch('./examples/book4.fb2');
     if (!response.ok) {
       throw new Error('Failed to load the book');
     }

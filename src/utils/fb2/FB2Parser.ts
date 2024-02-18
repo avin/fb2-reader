@@ -5,6 +5,7 @@ class FB2Parser {
     const parser = new fxparser.XMLParser({
       ignoreAttributes: false,
       preserveOrder: true,
+      trimValues: false
     });
     return parser.parse(content);
   }
