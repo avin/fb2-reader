@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import cn from 'clsx';
-import FormattedContent from '@/components/common/BookView/FormattedContent/FormattedContent.tsx';
 import { FB2 } from '@/utils/fb2/FB2.ts';
-import { Book } from '@/utils/fb2/FB2Parser.ts';
 import styles from './BookView.module.scss';
+import FormattedContent from './FormattedContent/FormattedContent.tsx';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
   content: string;
 }
 
 function BookView({ content, className, ...props }: Props) {
-  const [book, setBook] = useState<Book | null>(null);
+  const [book, setBook] = useState<any>(null);
 
   useEffect(() => {
     const fb2 = FB2.init();
     const bookObj = fb2.parse(content);
     setBook(bookObj);
-    console.log(bookObj);
   }, [content]);
 
   if (!book) {
@@ -25,51 +23,16 @@ function BookView({ content, className, ...props }: Props) {
 
   return (
     <div className={cn(styles.book, className)} {...props}>
-      {book.bodies.map((body, idx) => {
-        return (
-          <div className={styles.body} key={String(idx)}>
-            {body.sections.map((section, idx) => {
-              return (
-                <div className={styles.section} key={String(idx)}>
-                  {section.title && (
-                    <FormattedContent className={styles.title} content={section.title} />
-                  )}
-
-                  {section.content.map((contentItem, idx) => {
-                    return (
-                      <div key={String(idx)}>
-                        {(() => {
-                          switch (contentItem.type) {
-                            case 'paragraph': {
-                              return (
-                                <FormattedContent
-                                  className={styles.paragraph}
-                                  content={contentItem.text}
-                                />
-                              );
-                            }
-                            case 'image': {
-                              return (
-                                <div className={styles.image}>
-                                  TODO: Image here ({contentItem.href})
-                                </div>
-                              );
-                            }
-                            case 'poem': {
-                              return <div className={styles.poem}>TODO: Poem here...</div>;
-                            }
-                            default:
-                              return null;
-                          }
-                        })()}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        );
+      {book.map((item, idx) => {
+        const tag = Object.keys(item)[0];
+        if (tag === 'body') {
+          return (
+            <div className={styles.body} key={idx}>
+              <FormattedContent key={idx} content={item[tag]} />
+            </div>
+          );
+        }
+        return null;
       })}
     </div>
   );

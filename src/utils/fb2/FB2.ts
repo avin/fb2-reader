@@ -10,13 +10,19 @@ export class FB2 {
   parse(content: string) {
     const parser = new FB2Parser();
 
-    const book = parser.parse(content);
+    const obj = parser.parse(content);
 
-    return book;
+    console.log(obj);
+
+    return obj[1].FictionBook;
+  }
+
+  getTag(item){
+    return
   }
 
   async loadExample() {
-    const response = await fetch('./examples/book2.fb2');
+    const response = await fetch('./examples/book.fb2');
     if (!response.ok) {
       throw new Error('Failed to load the book');
     }

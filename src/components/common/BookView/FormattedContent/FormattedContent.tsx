@@ -1,37 +1,65 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import cn from 'clsx';
-import DOMPurify from 'dompurify';
 import styles from './FormattedContent.module.scss';
 
-interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
-  content: string | undefined | null;
+interface Props {
+  content: any[0];
 }
 
-function FormattedContent({ content, className, ...props }: Props) {
-  const html = useMemo(() => {
-    if (content === undefined || content === null) {
-      return null;
-    }
-    DOMPurify.addHook('uponSanitizeElement', (node, data) => {
-      if (data.tagName === 'strong') {
-        const newNode = document.createElement('b');
-        newNode.innerHTML = node.innerHTML;
-        node.parentNode?.replaceChild(newNode, node);
-      }
-    });
+function FormattedContent({ content }: Props) {
+  return (
+    <>
+      {content.map((item, idx) => {
+        const tag = Object.keys(item)[0];
 
-    const cleanHTML = DOMPurify.sanitize(content, {
-      ALLOWED_TAGS: ['strong', 'b'],
-    });
+        const commonTags = {
+          p: {
+            component: 'div',
+            className: styles.paragraph,
+          },
+          title: {
+            component: 'div',
+            className: styles.title,
+          },
+          section: {
+            component: 'div',
+            className: styles.section,
+          },
+          epigraph: {
+            component: 'div',
+            className: styles.epigraph,
+          },
+          strong: {
+            component: 'strong',
+          },
+          emphasis: {
+            component: 'i',
+          },
+        };
 
-    return cleanHTML;
-  }, [content]);
+        if (commonTags[tag]) {
+          const Component = commonTags[tag].component;
+          return (
+            <Component className={commonTags[tag].className} key={idx}>
+              <FormattedContent content={item[tag]} />
+            </Component>
+          );
+        }
 
-  if (html === null) {
-    return null;
-  }
-
-  return <div className={cn(className)} {...props} dangerouslySetInnerHTML={{ __html: html }} />;
+        if (tag === 'empty-line') {
+          return <br key={idx} />;
+        }
+        if (tag === '#text') {
+          return <React.Fragment key={idx}>{item[tag]}</React.Fragment>;
+        }
+        return (
+          <React.Fragment key={idx}>
+            [?? {tag}]<FormattedContent content={item[tag]} />[{tag} ??]
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
 }
 
 export default FormattedContent;
