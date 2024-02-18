@@ -10,18 +10,10 @@ import styles from './BookView.module.scss';
 import FormattedContent from './FormattedContent/FormattedContent.tsx';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
-  content: string;
+  book: any;
 }
 
-function BookView({ content, className, ...props }: Props) {
-  const [book, setBook] = useState<any>(null);
-
-  useEffect(() => {
-    const fb2 = FB2.init();
-    const bookObj = fb2.parse(content);
-    setBook(bookObj);
-  }, [content]);
-
+function BookView({ book, className, ...props }: Props) {
   useEffectOnce(() => {
     // Функция для определения и фиксации элемента на верху
     const fixTopElement = debounce(function fixTopElement() {
