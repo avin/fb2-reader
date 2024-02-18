@@ -8,6 +8,7 @@ import { FB2 } from '@/utils/fb2/FB2.ts';
 function ViewBookPage() {
   const location = useLocation();
   const [book, setBook] = useState<any>(null);
+  const [isLoadFailed, setIsLoadFailed] = useState(false);
   const content = location.state?.data;
   const { id: hash } = useParams();
 
@@ -38,13 +39,21 @@ function ViewBookPage() {
     }
 
     void (async () => {
-      const bookString = await dbReadBook({ hash });
-      parseBookString(bookString);
+      try {
+        const bookString = await dbReadBook({ hash });
+        parseBookString(bookString);
+      } catch (e) {
+        setIsLoadFailed(true);
+      }
     })();
   });
 
+  if (isLoadFailed) {
+    return <div>Loading failed!</div>;
+  }
+
   if (!book) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return <BookView book={book} />;

@@ -46,7 +46,6 @@ export function dbReadBook({ hash }) {
       const db: IDBDatabase = (event.target as CustomEventTarget).result;
       const transaction = db.transaction('books', 'readonly');
       const store = transaction.objectStore('books');
-      console.log('~~', hash);
       const request = store.get(hash);
 
       request.onsuccess = () => {
