@@ -21,7 +21,7 @@
 
 .paragraph {
   margin-bottom: 5px;
-  text-indent: 2em;
+  text-indent: 1.25em;
 
   :global(.debug) & {
     background-color: #d2d9fa;
@@ -88,14 +88,25 @@
 }
 
 .cite {
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  & > * {
+    width: 100%;
+
+    @include media('>=500px') {
+      max-width: 60%;
+      min-width: 400px;
+    }
+  }
 }
 
 .code {
   margin-bottom: -5px;
+  border-left: solid 2em #a8d9c8;
   color: #000;
   font-family: monospace;
-  border-left: solid 2em #A8D9C8;
 }
 
 .link {
