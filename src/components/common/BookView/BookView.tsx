@@ -25,7 +25,7 @@ function BookView({ content, className, ...props }: Props) {
   useEffectOnce(() => {
     // Функция для определения и фиксации элемента на верху
     const fixTopElement = debounce(function fixTopElement() {
-      const elements = document.querySelectorAll('#book *'); // Селектор ваших элементов
+      const elements = document.querySelectorAll('[data-id=book] *'); // Селектор ваших элементов
       const scrollTop = window.scrollY;
       let closestElement: any = null;
       let closestElementOffset = Number.MAX_VALUE;
@@ -58,7 +58,7 @@ function BookView({ content, className, ...props }: Props) {
 
   return (
     <BookProvider book={book}>
-      <div className={cn(styles.book, className, { debug: config.debug })} id="book" {...props}>
+      <div className={cn(styles.book, className, { debug: config.debug })} data-id="book" {...props}>
         {book.map((item, idx) => {
           const tag = Object.keys(item)[0];
           if (tag === 'description') {

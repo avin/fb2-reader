@@ -15,10 +15,14 @@ function FormattedContent({ content }: Props) {
       {content.map((item, idx) => {
         const tag = Object.keys(item)[0];
 
-        const commonProps = {
+        const commonProps: Record<string, any> = {
           key: idx,
           'data-id': id++,
         };
+
+        if (item[':@']?.['@_id']) {
+          commonProps.id = item[':@']?.['@_id'];
+        }
 
         const commonTags = {
           p: {
@@ -83,9 +87,9 @@ function FormattedContent({ content }: Props) {
         };
 
         if (commonTags[tag]) {
-          const Component = commonTags[tag].component;
+          const { component: Component, ...otherProps } = commonTags[tag];
           return (
-            <Component {...commonProps} className={commonTags[tag].className}>
+            <Component {...commonProps} {...otherProps}>
               <FormattedContent content={item[tag]} />
             </Component>
           );
@@ -96,7 +100,7 @@ function FormattedContent({ content }: Props) {
         }
 
         if (tag === 'a') {
-          return <Link {...commonProps} className={styles.link} attributes={item} />;
+          return <Link {...commonProps} className={styles.link} tooltipClassName={styles.linkTooltip} attributes={item} />;
         }
 
         if (tag === 'image') {
