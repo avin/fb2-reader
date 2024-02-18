@@ -65,6 +65,15 @@ function FormattedContent({ content }: Props) {
             component: 'div',
             className: styles.code,
           },
+          sup: {
+            component: 'sup',
+          },
+          sub: {
+            component: 'sub',
+          },
+          strikethrough: {
+            component: 's',
+          },
           strong: {
             component: 'strong',
           },
@@ -82,7 +91,7 @@ function FormattedContent({ content }: Props) {
           );
         }
 
-        if (tag === 'empty-line') {
+        if (tag === 'empty-line' || tag === 'br') {
           return <br {...commonProps} />;
         }
 
