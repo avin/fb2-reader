@@ -1,0 +1,13 @@
+@import 'variables';
+@import 'node_modules/include-media/dist/_include-media.scss';
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin focus-outline($offset: -2px) {
+  -moz-outline-radius: 0;
+  outline: 2px solid rgba(#000, 0.75);
+  outline-offset: $offset;
+}
