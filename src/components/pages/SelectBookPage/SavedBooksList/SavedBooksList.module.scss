@@ -1,0 +1,14 @@
+@import '@/styles/mixins';
+
+.list {
+  & > * + * {
+    margin-top: 8px;
+  }
+}
+.item {
+  display: block;
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: white;
+}

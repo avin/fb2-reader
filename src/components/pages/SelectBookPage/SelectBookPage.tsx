@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
+import SavedBooksList from '@/components/pages/SelectBookPage/SavedBooksList/SavedBooksList.tsx';
 import routes from '@/constants/routes.ts';
+import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
+import { hashString } from '@/utils/hash.ts';
 import styles from './SelectBookPage.module.scss';
-import {hashString} from '@/utils/hash.ts';
 
 function SelectBookPage() {
   const [isDragging, setIsDragging] = useState(false);
   const navigate = useNavigate();
+  const [savedBookMetas, setSavedBookMetas] = useState<any>(null);
+
+  useEffectOnce(() => {
+    void (async () => {
+      const metas = await booksDbManagerInstance.getAllBookMetas();
+      setSavedBookMetas(metas);
+    })();
+  });
 
   const handleDragOver = (e) => {
     e.preventDefault(); // Необходимо для возможности сбросить файл
@@ -60,7 +71,7 @@ function SelectBookPage() {
       </div>
       <div className={styles.selectPreviousBlock}>
         <div>or select a previously loaded book:</div>
-        <div>#TODO list here#</div>
+        {savedBookMetas && <SavedBooksList savedBookMetas={savedBookMetas} />}
       </div>
     </div>
   );

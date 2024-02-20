@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import { debounce } from 'lodash-es';
 import BookDescription from '@/components/common/BookView/BookDescription/BookDescription.tsx';
 import BookProvider from '@/components/common/BookView/BookProvider/BookProvider.tsx';
 import config from '@/config.ts';
-import { FB2 } from '@/utils/fb2/FB2.ts';
 import styles from './BookView.module.scss';
 import FormattedContent from './FormattedContent/FormattedContent.tsx';
 
@@ -15,7 +14,7 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 function BookView({ book, className, ...props }: Props) {
   useEffectOnce(() => {
-    // Функция для определения и фиксации элемента на верху
+    // Функция для определения и фиксации элемента наверху
     const fixTopElement = debounce(function fixTopElement() {
       const elements = document.querySelectorAll('[data-id=book] *'); // Селектор ваших элементов
       const scrollTop = window.scrollY;
@@ -50,21 +49,18 @@ function BookView({ book, className, ...props }: Props) {
 
   return (
     <BookProvider book={book}>
-      <div className={cn(styles.book, className, { debug: config.debug })} data-id="book" {...props}>
+      <div className={cn(styles.book, className, {debug: config.debug})} data-id="book" {...props}>
+        <div className={styles.bookDescription}>
+          <BookDescription content={book}/>
+        </div>
+
         {book.map((item, idx) => {
           const tag = Object.keys(item)[0];
-          if (tag === 'description') {
-            return (
-              <div className={styles.bookDescription} key={idx}>
-                <BookDescription key={idx} content={item[tag]} />
-              </div>
-            );
-          }
           if (tag === 'body') {
             return (
-              <div className={styles.body} key={idx}>
-                <FormattedContent key={idx} content={item[tag]} />
-              </div>
+                <div className={styles.body} key={idx}>
+                  <FormattedContent key={idx} content={item[tag]}/>
+                </div>
             );
           }
           return null;

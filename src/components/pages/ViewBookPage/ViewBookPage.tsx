@@ -3,22 +3,26 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import BookView from '@/components/common/BookView/BookView.tsx';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
-import { FB2 } from '@/utils/fb2/FB2.ts';
+import {getBookMetadata, parseBookXml} from '@/utils/fb2.ts';
 
 function ViewBookPage() {
   const location = useLocation();
   const [book, setBook] = useState<any>(null);
   const [isLoadFailed, setIsLoadFailed] = useState(false);
   const content = location.state?.data;
-  const { id: hash } = useParams();
+  const { id } = useParams();
 
   const parseBookString = (str: string) => {
-    const fb2 = FB2.init();
-    const bookObj = fb2.parse(str);
+    const bookObj = parseBookXml(str)[1].FictionBook;
     setBook(bookObj);
+
+    // Пишем по книге метаданные
+    void booksDbManagerInstance.writeBookMeta(id!, {
+      ...getBookMetadata(bookObj)
+    })
   };
 
-  // Если была передана книга с другой странице - сохраняем её в DB
+  // Если была передана книга с другой страницы - сохраняем её в БД
   useEffectOnce(() => {
     if (!content) {
       return;
@@ -26,10 +30,10 @@ function ViewBookPage() {
 
     parseBookString(content);
 
-    void booksDbManagerInstance.writeBookString(hash!, content);
+    void booksDbManagerInstance.writeBookString(id!, content);
   });
 
-  // Если книгу не передавали, то пытаемся загрузить её из DB по хешу
+  // Если книгу не передавали, то пытаемся загрузить её из БД
   useEffectOnce(() => {
     if (content) {
       return;
@@ -37,7 +41,7 @@ function ViewBookPage() {
 
     void (async () => {
       try {
-        const bookString = await booksDbManagerInstance.readBookString(hash!);
+        const bookString = await booksDbManagerInstance.readBookString(id!);
         parseBookString(bookString);
       } catch (e) {
         setIsLoadFailed(true);
