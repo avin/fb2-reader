@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import BookView from '@/components/common/BookView/BookView.tsx';
-import { dbReadBook, dbWriteBook } from '@/utils/db.ts';
+import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { FB2 } from '@/utils/fb2/FB2.ts';
 
 function ViewBookPage() {
@@ -26,10 +26,7 @@ function ViewBookPage() {
 
     parseBookString(content);
 
-    void dbWriteBook({
-      hash,
-      bookString: content,
-    });
+    void booksDbManagerInstance.writeBookString(hash!, content);
   });
 
   // Если книгу не передавали, то пытаемся загрузить её из DB по хешу
@@ -40,7 +37,7 @@ function ViewBookPage() {
 
     void (async () => {
       try {
-        const bookString = await dbReadBook({ hash });
+        const bookString = await booksDbManagerInstance.readBookString(hash!);
         parseBookString(bookString);
       } catch (e) {
         setIsLoadFailed(true);
