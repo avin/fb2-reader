@@ -85,14 +85,11 @@ function BookView({ book, bookId, className, ...props }: Props) {
   useEffectOnce(() => {
     void (async () => {
       // Восстанавливаем предыдущее состояние прокрутки
-      const data = await booksDbManagerInstance.readBookProgress(bookId);
-      if (!data) {
-        return;
-      }
-      const el = document.querySelector(`[data-id="${data.elementId}"]`) as HTMLElement;
-      if (el) {
+      try {
+        const data = await booksDbManagerInstance.readBookProgress(bookId);
+        const el = document.querySelector(`[data-id="${data.elementId}"]`) as HTMLElement;
         adjustScrollToElement(el);
-      }
+      } catch {}
     })();
   });
 

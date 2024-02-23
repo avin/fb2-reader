@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
+import cn from 'clsx';
 import BookView from '@/components/common/BookView/BookView.tsx';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
-import {getBookMetadata, parseBookXml} from '@/utils/fb2.ts';
+import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
+import styles from './ViewBookPage.module.scss';
+
 
 function ViewBookPage() {
   const location = useLocation();
   const [book, setBook] = useState<any>(null);
-  const [isLoadFailed, setIsLoadFailed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFailed, setIsLoadingFailed] = useState(false);
   const content = location.state?.data;
   const { id } = useParams();
 
@@ -18,8 +22,10 @@ function ViewBookPage() {
 
     // Пишем по книге метаданные
     void booksDbManagerInstance.writeBookMeta(id!, {
-      ...getBookMetadata(bookObj)
-    })
+      ...getBookMetadata(bookObj),
+    });
+
+    setIsLoading(false);
   };
 
   // Если была передана книга с другой страницы - сохраняем её в БД
@@ -44,20 +50,22 @@ function ViewBookPage() {
         const bookString = await booksDbManagerInstance.readBookString(id!);
         parseBookString(bookString);
       } catch (e) {
-        setIsLoadFailed(true);
+        setIsLoading(false);
+        setIsLoadingFailed(true);
+        console.warn(e);
       }
     })();
   });
 
-  if (isLoadFailed) {
-    return <div>Loading failed!</div>;
-  }
-
-  if (!book) {
-    return <div>Loading...</div>;
-  }
-
-  return <BookView book={book} bookId={id!}/>;
+  return (
+    <div>
+      <div className={cn(styles.loadingContainer, { [styles.active]: isLoading })}>
+        <div className={styles.content}>Loading...</div>
+      </div>
+      {book && <BookView book={book} bookId={id!} />}
+      {isLoadingFailed && <div>Loading failed!</div>}
+    </div>
+  );
 }
 
 export default ViewBookPage;
