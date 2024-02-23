@@ -20,7 +20,6 @@ function BookView({ book, bookId, className, ...props }: Props) {
     let topElement: HTMLElement;
     let lastWidth = window.innerWidth;
 
-
     const writeProgressInfo = debounce(function fixTopElement() {
       if (!topElement) {
         return;
@@ -42,7 +41,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
         const rect = element.getBoundingClientRect();
         const offset = rect.top + scrollTop; // Абсолютное смещение от начала страницы
 
-        // Ищем элемент, который находится на верху или как можно ближе к верху видимой части
+        // Ищем элемент, который находится наверху или как можно ближе к верху видимой части
         if (rect.top >= 0 && rect.top < closestElementOffset) {
           closestElement = element;
           closestElementOffset = rect.top;
@@ -57,7 +56,6 @@ function BookView({ book, bookId, className, ...props }: Props) {
 
       writeProgressInfo();
     };
-
 
     const handleScroll = () => {
       // Если ширина окна изменилась, предполагаем, что это изменение зума
@@ -82,6 +80,20 @@ function BookView({ book, bookId, className, ...props }: Props) {
       window.removeEventListener('scroll', handleScroll);
       // window.removeEventListener('resize', handleResize);
     };
+  });
+
+  useEffectOnce(() => {
+    void (async () => {
+      // Восстанавливаем предыдущее состояние прокрутки
+      const data = await booksDbManagerInstance.readBookProgress(bookId);
+      if (!data) {
+        return;
+      }
+      const el = document.querySelector(`[data-id="${data.elementId}"]`) as HTMLElement;
+      if (el) {
+        adjustScrollToElement(el);
+      }
+    })();
   });
 
   if (!book) {

@@ -45,7 +45,7 @@ export class BooksDbManager {
   }
 
   async readBookProgress(id: string) {
-    const data = await this.dbClient.read('bookProgresses', id);
+    const data = await this.dbClient.read<{elementId: string, progress: number,}>('bookProgresses', id);
     if (!data) {
       throw new Error('book not exists');
     }

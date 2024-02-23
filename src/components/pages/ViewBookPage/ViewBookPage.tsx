@@ -57,7 +57,7 @@ function ViewBookPage() {
     return <div>Loading...</div>;
   }
 
-  return <BookView book={book} bookId={id}/>;
+  return <BookView book={book} bookId={id!}/>;
 }
 
 export default ViewBookPage;
