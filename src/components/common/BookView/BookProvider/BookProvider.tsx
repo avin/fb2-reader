@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useRef } from 'react';
 
 interface BookProviderContextType {
   getBook: () => any;
+  getDataIdRef: () => { current: number };
 }
 
 export const BookProviderContext = React.createContext<BookProviderContextType | undefined>(
@@ -14,8 +15,11 @@ interface BookProviderProps {
 }
 
 function BookProvider({ children, book }: BookProviderProps) {
+  const dataIdRef = useRef(0);
+
   const contextValue = {
     getBook: () => book,
+    getDataIdRef: () => dataIdRef,
   };
 
   return (

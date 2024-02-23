@@ -2,14 +2,15 @@ import React from 'react';
 import styles from './FormattedContent.module.scss';
 import Image from '../Image/Image.tsx';
 import Link from '../Link/Link.tsx';
+import {useBookProvider} from '@/components/common/BookView/BookProvider/useBookProvider.ts';
 
 interface Props {
   content: any[0];
 }
 
-let id = 0;
-
 function FormattedContent({ content }: Props) {
+  const dataIdRef = useBookProvider().getDataIdRef();
+
   return (
     <>
       {content.map((item, idx) => {
@@ -17,7 +18,7 @@ function FormattedContent({ content }: Props) {
 
         const commonProps: Record<string, any> = {
           key: idx,
-          'data-id': id++,
+          'data-id': dataIdRef.current++,
         };
 
         if (item[':@']?.['@_id']) {
@@ -90,7 +91,7 @@ function FormattedContent({ content }: Props) {
           const { component: Component, ...otherProps } = commonTags[tag];
           return (
             <Component {...commonProps} {...otherProps}>
-              <FormattedContent content={item[tag]} />
+              <FormattedContent content={item[tag]}/>
             </Component>
           );
         }
