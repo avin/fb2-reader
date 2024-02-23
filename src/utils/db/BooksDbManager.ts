@@ -4,9 +4,10 @@ export class BooksDbManager {
   private constructor(private dbClient: IndexedDBClient) {}
 
   static async open() {
-    const dbClient = await IndexedDBClient.open('fb2Reader', 1, [
+    const dbClient = await IndexedDBClient.open('fb2Reader', 3, [
       { name: 'bookStrings', options: { keyPath: 'id' } },
       { name: 'bookMetas', options: { keyPath: 'id' } },
+      { name: 'bookProgresses', options: { keyPath: 'id' } },
     ]);
     return new BooksDbManager(dbClient);
   }
@@ -37,5 +38,17 @@ export class BooksDbManager {
 
   async getAllBookMetas() {
     return this.dbClient.readAll('bookMetas');
+  }
+
+  async writeBookProgress(id: string, data: Record<string, unknown>) {
+    return this.dbClient.write('bookProgresses', { ...data, id });
+  }
+
+  async readBookProgress(id: string) {
+    const data = await this.dbClient.read('bookProgresses', id);
+    if (!data) {
+      throw new Error('book not exists');
+    }
+    return data;
   }
 }
