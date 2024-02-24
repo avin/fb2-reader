@@ -30,3 +30,7 @@ export type BookProgress = {
   id: string;
   lastReadTime: number;
 };
+
+export type Settings = {
+
+}

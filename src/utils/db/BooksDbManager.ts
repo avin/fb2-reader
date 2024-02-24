@@ -1,4 +1,4 @@
-import { BookMeta, BookProgress } from '@/types';
+import { BookMeta, BookProgress, Settings } from '@/types';
 import { IndexedDBClient } from '@/utils/db/IndexedDBClient.ts';
 
 export class BooksDbManager {
@@ -9,6 +9,7 @@ export class BooksDbManager {
       { name: 'bookStrings', options: { keyPath: 'id' } },
       { name: 'bookMetas', options: { keyPath: 'id' } },
       { name: 'bookProgresses', options: { keyPath: 'id' } },
+      { name: 'settings', options: { keyPath: 'id' } },
     ]);
     return new BooksDbManager(dbClient);
   }
@@ -46,6 +47,15 @@ export class BooksDbManager {
   async readBookProgress(id: string) {
     const data = await this.dbClient.read<BookProgress>('bookProgresses', id);
     return data;
+  }
+
+  async writeSettings(id: string, data: Settings) {
+    return this.dbClient.write('settings', { id: 'root', data });
+  }
+
+  async readSettings(id: string) {
+    const data = await this.dbClient.read<{ id: 'root'; data: Settings }>('settings', id);
+    return data?.data;
   }
 
   async removeBook(id: string) {
