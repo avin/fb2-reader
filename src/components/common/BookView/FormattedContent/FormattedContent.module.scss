@@ -2,10 +2,6 @@
 
 .section {
   @include padding-y(20px);
-
-  :global(.debug) & {
-    background-color: #ddfad2;
-  }
 }
 
 .title {
@@ -13,78 +9,43 @@
 
   font-weight: bold;
   font-size: 20px;
-
-  :global(.debug) & {
-    background-color: #d2f3fa;
-  }
 }
 
 .paragraph {
   margin-bottom: 12px;
   // text-indent: 1.25em;
-
-  :global(.debug) & {
-    background-color: #d2d9fa;
-  }
 }
 
 .image {
-  :global(.debug) & {
-    background-color: #e5d2fa;
-  }
 }
 
 .poem {
   @include padding-y(10px);
   padding-left: 40px;
-
-  :global(.debug) & {
-    background-color: #fad2ef;
-  }
 }
 
 .epigraph {
-  :global(.debug) & {
-    background-color: #fad2d2;
-  }
 }
 
 .stanza {
-  :global(.debug) & {
-    background-color: #7ea2e5;
-  }
 }
 
 .image {
   display: flex;
   justify-content: center;
-
-  :global(.debug) & {
-    background-color: #e57e9d;
-  }
 }
 
 .v {
   font-style: italic;
-
-  :global(.debug) & {
-  }
 }
 
 .textAuthor {
   font-weight: 500;
-
-  :global(.debug) & {
-  }
 }
 
 .subtitle {
   font-weight: bold;
   text-align: center;
-
-  :global(.debug) & {
-    background-color: #e7d91d;
-  }
 }
 
 .cite {
@@ -121,7 +82,7 @@
   border: 1px solid black;
   background-color: white;
 
-  .title{
+  .title {
     padding: 0;
   }
 }

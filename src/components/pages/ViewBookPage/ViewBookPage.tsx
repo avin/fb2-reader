@@ -6,6 +6,7 @@ import BookView from '@/components/common/BookView/BookView.tsx';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
 import styles from './ViewBookPage.module.scss';
+import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
 
 function ViewBookPage() {
   const location = useLocation();
@@ -59,7 +60,8 @@ function ViewBookPage() {
   });
 
   return (
-    <div>
+    <div className={styles.page}>
+      <ViewControl />
       <div className={cn(styles.loadingContainer, { [styles.active]: isLoading })}>
         <div className={styles.content}>Loading...</div>
       </div>

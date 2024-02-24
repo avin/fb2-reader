@@ -1,5 +1,9 @@
 @import '@/styles/mixins';
 
+.page{
+  position: relative;
+}
+
 .loadingContainer {
   pointer-events: none;
   display: flex;
