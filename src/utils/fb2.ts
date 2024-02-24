@@ -45,13 +45,11 @@ export function getBookMetadata(bookObj: any) {
     });
 
   return {
-    titleInfo: {
-      genres,
-      authors,
-      bookTitle,
-      annotation,
-      date,
-      coverPage,
-    },
+    genres,
+    authors,
+    bookTitle,
+    annotation,
+    date,
+    coverPage,
   };
 }

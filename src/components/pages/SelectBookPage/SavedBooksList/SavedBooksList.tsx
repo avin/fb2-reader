@@ -23,23 +23,27 @@ function SavedBooksList({ className, ...props }: Props) {
   }
 
   return (
-    <div className={cn(className, styles.list)} {...props}>
-      {savedBooksList.map(({ id, meta }) => {
-        return (
-          <div key={id} className={styles.item}>
-            <Link className={styles.openButton} to={routes.viewBook.replace(':id', id)}>
-              {meta.titleInfo.bookTitle}
-            </Link>
-            <button
-              type="button"
-              className={styles.removeButton}
-              onClick={createRemoveBookHandler(id)}
-            >
-              x
-            </button>
-          </div>
-        );
-      })}
+    <div className={className}>
+      <div>or select a previously loaded book:</div>
+      <div className={cn(className, styles.list)} {...props}>
+        {savedBooksList.map(({ id, meta, progress }) => {
+          return (
+            <div key={id} className={styles.item}>
+              <Link className={styles.openButton} to={routes.viewBook.replace(':id', id)}>
+                <div className={styles.name}>{meta.bookTitle}</div>
+                {progress && <div className={styles.progress}>{progress.progress.toFixed(1)}%</div>}
+              </Link>
+              <button
+                type="button"
+                className={styles.removeButton}
+                onClick={createRemoveBookHandler(id)}
+              >
+                x
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

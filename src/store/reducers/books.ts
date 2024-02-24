@@ -1,10 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import type { AppThunkAction } from '@/store/configureStore';
+import { BookMeta, BookProgress } from '@/types';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 
 export type BooksState = {
   // Язык страницы пришедший в query-параметрах
-  savedBooks: any;
+  savedBooks: Record<string, { id: string; meta: BookMeta; progress: BookProgress }>;
 };
 
 const initialState: BooksState = {

@@ -1,3 +1,4 @@
+import { BookMeta, BookProgress } from '@/types';
 import { IndexedDBClient } from '@/utils/db/IndexedDBClient.ts';
 
 export class BooksDbManager {
@@ -24,12 +25,12 @@ export class BooksDbManager {
     return data.content;
   }
 
-  async writeBookMeta(id: string, data: Record<string, unknown>) {
+  async writeBookMeta(id: string, data: BookMeta) {
     return this.dbClient.write('bookMetas', { ...data, id });
   }
 
   async readBookMeta(id: string) {
-    const data = await this.dbClient.read('bookMetas', id);
+    const data = await this.dbClient.read<BookMeta>('bookMetas', id);
     if (!data) {
       throw new Error('book not exists');
     }
@@ -37,22 +38,19 @@ export class BooksDbManager {
   }
 
   async getAllBookMetas() {
-    return this.dbClient.readAll('bookMetas');
+    return this.dbClient.readAll<BookMeta>('bookMetas');
   }
 
   async getAllBookProgresses() {
-    return this.dbClient.readAll('bookProgresses');
+    return this.dbClient.readAll<BookProgress>('bookProgresses');
   }
 
-  async writeBookProgress(id: string, data: Record<string, unknown>) {
+  async writeBookProgress(id: string, data: BookProgress) {
     return this.dbClient.write('bookProgresses', { ...data, id });
   }
 
   async readBookProgress(id: string) {
-    const data = await this.dbClient.read<{ elementId: string; progress: number }>(
-      'bookProgresses',
-      id,
-    );
+    const data = await this.dbClient.read<BookProgress>('bookProgresses', id);
     if (!data) {
       throw new Error('book not exists');
     }

@@ -17,11 +17,11 @@ function BookDescription({ content, className, ...props }: Props) {
     <div className={cn(className)} {...props}>
       <div>
         <div>
-          <b>Genres:</b> {data.titleInfo.genres.join(', ')}
+          <b>Genres:</b> {data.genres.join(', ')}
         </div>
         <div>
           <b>Authors:</b>{' '}
-          {data.titleInfo.authors.map((author, idx) => {
+          {data.authors.map((author, idx) => {
             const name = [author.firstName, author.nickname, author.middleName, author.lastName]
               .filter(Boolean)
               .join(' ');
@@ -44,22 +44,22 @@ function BookDescription({ content, className, ...props }: Props) {
           })}
         </div>
         <div>
-          <b>BookTitle:</b> {data.titleInfo.bookTitle}
+          <b>BookTitle:</b> {data.bookTitle}
         </div>
-        {data.titleInfo.annotation && (
+        {data.annotation && (
           <div>
             <b>Annotation:</b>
-            <FormattedContent content={data.titleInfo.annotation} />
+            <FormattedContent content={data.annotation} />
           </div>
         )}
-        {data.titleInfo.date && (
+        {data.date && (
           <div>
-            <b>date:</b> {data.titleInfo.date}
+            <b>date:</b> {data.date}
           </div>
         )}
-        {data.titleInfo.coverPage && (
+        {data.coverPage && (
           <div>
-            <b>coverPage:</b> <FormattedContent content={data.titleInfo.coverPage} />
+            <b>coverPage:</b> <FormattedContent content={data.coverPage} />
           </div>
         )}
       </div>

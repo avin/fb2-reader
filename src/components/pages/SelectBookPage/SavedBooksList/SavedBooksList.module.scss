@@ -11,6 +11,16 @@
   align-items: center;
   padding: 0 8px;
   flex: 1;
+
+  .name{
+    flex: 1;
+
+  }
+
+  .progress{
+    color: #999;
+    padding-left: 20px;
+  }
 }
 
 .removeButton {

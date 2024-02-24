@@ -1,9 +1,5 @@
 export class IndexedDBClient {
-  private db: IDBDatabase | null = null;
-
-  private constructor(db: IDBDatabase) {
-    this.db = db;
-  }
+  private constructor(private db: IDBDatabase) {}
 
   static open(
     name: string,
@@ -97,7 +93,8 @@ export class IndexedDBClient {
       const request = store.delete(key);
 
       request.onsuccess = () => resolve();
-      request.onerror = () => reject(new Error(`Delete operation failed: ${request.error?.message}`));
+      request.onerror = () =>
+        reject(new Error(`Delete operation failed: ${request.error?.message}`));
     });
   }
 }

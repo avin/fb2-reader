@@ -69,10 +69,8 @@ function SelectBookPage() {
         Drop a book onto this page or load it manually:
         <input type="file" className={styles.openFileButton} onChange={handleFileChange} />
       </div>
-      <div className={styles.selectPreviousBlock}>
-        <div>or select a previously loaded book:</div>
-        <SavedBooksList />
-      </div>
+      <SavedBooksList className={styles.savedBooksList}/>
+
     </div>
   );
 }
