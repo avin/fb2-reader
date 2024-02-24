@@ -18,3 +18,22 @@ export function adjustScrollToElement(element: HTMLElement) {
     window.scrollTo({ top: window.pageYOffset + yOffset, behavior: 'instant' });
   }
 }
+
+
+export function getTopElement(){
+  const elements = document.querySelectorAll('[data-id=book] [data-id]'); // Селектор ваших элементов
+  let closestElement: any = null;
+  let closestElementOffset = Number.MAX_VALUE;
+
+  elements.forEach((element) => {
+    const rect = element.getBoundingClientRect();
+
+    // Ищем элемент, который находится наверху или как можно ближе к верху видимой части
+    if (rect.top >= 0 && rect.top < closestElementOffset) {
+      closestElement = element;
+      closestElementOffset = rect.top;
+    }
+  });
+
+  return closestElement;
+}

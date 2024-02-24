@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useEffectOnce } from 'react-use';
+import cn from 'clsx';
 import styles from './WidthControl.module.scss';
 
 interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'> {
@@ -71,7 +72,7 @@ function WidthControl({ onChange, className, ...props }: Props) {
   }, [onChange, position]);
 
   return (
-    <div className={styles.slider} ref={sliderRef}>
+    <div className={cn(className, styles.slider)} ref={sliderRef}>
       <div className={styles.track}>
         <div className={styles.thumb} style={{ left: `${position * 100}%` }} />
         <div className={styles.separator} style={{ left: '0%' }} />

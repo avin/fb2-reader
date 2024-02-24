@@ -5,7 +5,7 @@ import { debounce } from 'lodash-es';
 import BookDescription from '@/components/common/BookView/BookDescription/BookDescription.tsx';
 import BookProvider from '@/components/common/BookView/BookProvider/BookProvider.tsx';
 import config from '@/config.ts';
-import { adjustScrollToElement, getScrollPercentage } from '@/utils/browser.ts';
+import { adjustScrollToElement, getScrollPercentage, getTopElement } from '@/utils/browser.ts';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import styles from './BookView.module.scss';
 import FormattedContent from './FormattedContent/FormattedContent.tsx';
@@ -38,7 +38,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
     let topElement: HTMLElement;
     let lastWidth = window.innerWidth;
 
-    const writeProgressInfo = debounce(function fixTopElement() {
+    const writeProgressInfo = debounce(() => {
       if (!topElement) {
         return;
       }
@@ -50,26 +50,8 @@ function BookView({ book, bookId, className, ...props }: Props) {
     }, 300);
 
     // Сохранить позицию верхнего элемента
-    const fixTopElement = function fixTopElement() {
-      const elements = document.querySelectorAll('[data-id=book] [data-id]'); // Селектор ваших элементов
-      let closestElement: any = null;
-      let closestElementOffset = Number.MAX_VALUE;
-
-      elements.forEach((element) => {
-        const rect = element.getBoundingClientRect();
-
-        // Ищем элемент, который находится наверху или как можно ближе к верху видимой части
-        if (rect.top >= 0 && rect.top < closestElementOffset) {
-          closestElement = element;
-          closestElementOffset = rect.top;
-        }
-      });
-
-      if (!closestElement) {
-        return;
-      }
-
-      topElement = closestElement;
+    const fixTopElement = () => {
+      topElement = getTopElement();
 
       writeProgressInfo();
     };
@@ -79,7 +61,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
       const widthChange = Math.abs(window.innerWidth - lastWidth);
       if (widthChange > 0) {
         if (topElement) {
-          // Подскроливаем до последнего верхнего элемента
+          // Скролим до последнего верхнего элемента
           adjustScrollToElement(topElement);
         }
         // Обновляем последнюю известную ширину окна
