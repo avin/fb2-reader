@@ -20,8 +20,8 @@
 }
 
 .paragraph {
-  margin-bottom: 5px;
-  text-indent: 1.25em;
+  margin-bottom: 12px;
+  // text-indent: 1.25em;
 
   :global(.debug) & {
     background-color: #d2d9fa;
