@@ -19,10 +19,7 @@ export class BooksDbManager {
 
   async readBookString(id: string) {
     const data = await this.dbClient.read<{ content: string }>('bookStrings', id);
-    if (!data) {
-      throw new Error('book not exists');
-    }
-    return data.content;
+    return data?.content;
   }
 
   async writeBookMeta(id: string, data: BookMeta) {
@@ -31,9 +28,6 @@ export class BooksDbManager {
 
   async readBookMeta(id: string) {
     const data = await this.dbClient.read<BookMeta>('bookMetas', id);
-    if (!data) {
-      throw new Error('book not exists');
-    }
     return data;
   }
 
@@ -45,15 +39,12 @@ export class BooksDbManager {
     return this.dbClient.readAll<BookProgress>('bookProgresses');
   }
 
-  async writeBookProgress(id: string, data: BookProgress) {
+  async writeBookProgress(id: string, data: MakeOptional<BookProgress, 'id'>) {
     return this.dbClient.write('bookProgresses', { ...data, id });
   }
 
   async readBookProgress(id: string) {
     const data = await this.dbClient.read<BookProgress>('bookProgresses', id);
-    if (!data) {
-      throw new Error('book not exists');
-    }
     return data;
   }
 

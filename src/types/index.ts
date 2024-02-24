@@ -15,8 +15,8 @@ export type BookMeta = {
 };
 
 export type BookProgress = {
-  elementId: string;
+  elementId?: string;
   progress: number;
   id: string;
-  lastReadTime: null | number
+  lastReadTime: number
 };

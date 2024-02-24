@@ -17,6 +17,24 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 function BookView({ book, bookId, className, ...props }: Props) {
   useEffectOnce(() => {
+    void (async () => {
+      const currentProgress = await booksDbManagerInstance.readBookProgress(bookId);
+      void booksDbManagerInstance.writeBookProgress(
+        bookId,
+        currentProgress
+          ? {
+              ...currentProgress,
+              lastReadTime: +new Date(),
+            }
+          : {
+              elementId: undefined,
+              progress: 0,
+              lastReadTime: +new Date(),
+            },
+      );
+    })();
+  });
+  useEffectOnce(() => {
     let topElement: HTMLElement;
     let lastWidth = window.innerWidth;
 
@@ -27,19 +45,18 @@ function BookView({ book, bookId, className, ...props }: Props) {
       void booksDbManagerInstance.writeBookProgress(bookId, {
         elementId: topElement.dataset.id,
         progress: getScrollPercentage(),
+        lastReadTime: +new Date(),
       });
     }, 300);
 
     // Сохранить позицию верхнего элемента
     const fixTopElement = function fixTopElement() {
       const elements = document.querySelectorAll('[data-id=book] [data-id]'); // Селектор ваших элементов
-      const scrollTop = window.scrollY;
       let closestElement: any = null;
       let closestElementOffset = Number.MAX_VALUE;
 
       elements.forEach((element) => {
         const rect = element.getBoundingClientRect();
-        const offset = rect.top + scrollTop; // Абсолютное смещение от начала страницы
 
         // Ищем элемент, который находится наверху или как можно ближе к верху видимой части
         if (rect.top >= 0 && rect.top < closestElementOffset) {
@@ -74,11 +91,9 @@ function BookView({ book, bookId, className, ...props }: Props) {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      // window.removeEventListener('resize', handleResize);
     };
   });
 
