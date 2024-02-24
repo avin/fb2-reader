@@ -84,4 +84,20 @@ export class IndexedDBClient {
         reject(new Error(`Read all operation failed: ${request.error?.message}`));
     });
   }
+
+  delete(storeName: string, key: IDBValidKey): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.db) {
+        reject(new Error('Database has not been initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction([storeName], 'readwrite');
+      const store = transaction.objectStore(storeName);
+      const request = store.delete(key);
+
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(new Error(`Delete operation failed: ${request.error?.message}`));
+    });
+  }
 }

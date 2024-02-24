@@ -4,19 +4,19 @@ import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import SavedBooksList from '@/components/pages/SelectBookPage/SavedBooksList/SavedBooksList.tsx';
 import routes from '@/constants/routes.ts';
-import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { hashString } from '@/utils/hash.ts';
 import styles from './SelectBookPage.module.scss';
+import {loadSavedBooks} from '@/store/reducers/books.ts';
+import {useAppDispatch} from '@/utils/hooks/useAppDispatch.ts';
 
 function SelectBookPage() {
   const [isDragging, setIsDragging] = useState(false);
   const navigate = useNavigate();
-  const [savedBookMetas, setSavedBookMetas] = useState<any>(null);
+  const dispatch = useAppDispatch();
 
   useEffectOnce(() => {
     void (async () => {
-      const metas = await booksDbManagerInstance.getAllBookMetas();
-      setSavedBookMetas(metas);
+      void dispatch(loadSavedBooks());
     })();
   });
 
@@ -71,7 +71,7 @@ function SelectBookPage() {
       </div>
       <div className={styles.selectPreviousBlock}>
         <div>or select a previously loaded book:</div>
-        {savedBookMetas && <SavedBooksList savedBookMetas={savedBookMetas} />}
+        <SavedBooksList />
       </div>
     </div>
   );

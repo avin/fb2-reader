@@ -1,9 +1,11 @@
 import { Reducer, combineReducers } from '@reduxjs/toolkit';
 import { UnknownAction } from 'redux';
 import ui from './ui';
+import books from './books';
 
 const rootReducer = combineReducers({
   ui,
+  books,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

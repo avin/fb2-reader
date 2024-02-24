@@ -40,15 +40,30 @@ export class BooksDbManager {
     return this.dbClient.readAll('bookMetas');
   }
 
+  async getAllBookProgresses() {
+    return this.dbClient.readAll('bookProgresses');
+  }
+
   async writeBookProgress(id: string, data: Record<string, unknown>) {
     return this.dbClient.write('bookProgresses', { ...data, id });
   }
 
   async readBookProgress(id: string) {
-    const data = await this.dbClient.read<{elementId: string, progress: number,}>('bookProgresses', id);
+    const data = await this.dbClient.read<{ elementId: string; progress: number }>(
+      'bookProgresses',
+      id,
+    );
     if (!data) {
       throw new Error('book not exists');
     }
     return data;
+  }
+
+  async removeBook(id: string) {
+    await Promise.all([
+      this.dbClient.delete('bookProgresses', id),
+      this.dbClient.delete('bookMetas', id),
+      this.dbClient.delete('bookStrings', id),
+    ]);
   }
 }

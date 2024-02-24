@@ -5,10 +5,31 @@
     margin-top: 8px;
   }
 }
+
+.openButton {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  flex: 1;
+}
+
+.removeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  background-color: pink;
+}
+
 .item {
-  display: block;
-  padding: 8px;
+  display: flex;
+  height: 40px;
   border: 1px solid black;
   border-radius: 4px;
   background-color: white;
+  overflow: hidden;
+
+  & > * {
+    height: 100%;
+  }
 }
