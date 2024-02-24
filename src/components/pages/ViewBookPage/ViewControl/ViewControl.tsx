@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeftIcon,
@@ -7,17 +7,28 @@ import {
   WrenchIcon,
 } from '@heroicons/react/24/solid';
 import cn from 'clsx';
+import WidthControl from '@/components/common/WidthControl/WidthControl.tsx';
 import routes from '@/constants/routes.ts';
+import { setViewWidth } from '@/store/reducers/ui.ts';
+import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
 import styles from './ViewControl.module.scss';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {}
 
 function ViewControl({ className, ...props }: Props) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleClickBack = () => {
     navigate(routes.selectBook);
   };
+
+  const handleChangeWidth = useCallback(
+    (v: number | 'auto') => {
+      dispatch(setViewWidth(v));
+    },
+    [dispatch],
+  );
 
   return (
     <div className={cn(styles.container, className)} {...props}>
@@ -34,6 +45,9 @@ function ViewControl({ className, ...props }: Props) {
         <button type="button">
           <WrenchIcon />
         </button>
+        <div className={styles.widthControlContainer}>
+          <WidthControl onChange={handleChangeWidth}></WidthControl>
+        </div>
       </div>
     </div>
   );

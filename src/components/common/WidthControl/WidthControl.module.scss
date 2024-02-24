@@ -1,0 +1,39 @@
+@use 'sass:math';
+@import '@/styles/mixins';
+
+.slider {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 100%;
+  height: 20px; // Define the height for the slider
+  cursor: pointer;
+  user-select: none;
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+}
+
+.separator {
+  $height: 10px;
+  position: absolute;
+  top: #{math.div(-$height, 2) + 1px};
+  width: 2px;
+  height: $height;
+  background-color: black;
+}
+
+.thumb {
+  $size: 20px;
+  @include size($size);
+  z-index: 1;
+  position: absolute;
+  transform: translateX(#{math.div(-$size, 2)}) translateY(#{math.div(-$size, 2) + 1px});
+  border: 2px solid black;
+  border-radius: 50%;
+  background-color: white;
+}

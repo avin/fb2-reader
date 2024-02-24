@@ -1,11 +1,10 @@
 @import '@/styles/mixins';
 
-.page{
+.page {
   position: relative;
 }
 
 .loadingContainer {
-  pointer-events: none;
   display: flex;
   z-index: 10;
   position: fixed;
@@ -17,6 +16,7 @@
   height: 100%;
   background-color: lightgoldenrodyellow;
   opacity: 0;
+  pointer-events: none;
   transition: all 0.2s linear;
 
   &.active {
@@ -24,7 +24,7 @@
     opacity: 1;
   }
 
-  .content{
+  .loadingText {
     animation: spin 2s linear infinite;
 
     @keyframes spin {
@@ -36,4 +36,10 @@
       }
     }
   }
+}
+
+.content {
+  margin: auto;
+  max-width: 100%;
+  min-width: 200px;
 }

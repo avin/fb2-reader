@@ -1,11 +1,11 @@
 @import '@/styles/mixins';
 
 .container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  background-color: lightgoldenrodyellow;
   padding: 8px;
+  background-color: lightgoldenrodyellow;
 }
 
 //.visualBlock {
@@ -32,9 +32,11 @@
     margin-left: 12px;
   }
 
-  button{
+  button {
     @include size(32px);
   }
 }
 
-
+.widthControlContainer {
+  width: 200px;
+}

@@ -7,10 +7,12 @@ import type { Language } from '@/types';
 export type UiState = {
   // Язык страницы пришедший в query-параметрах
   language: Language;
+  viewWidth: number|'auto';
 };
 
 const initialState: UiState = {
   language: config.defaultLanguage,
+  viewWidth: 'auto'
 };
 
 const slice = createSlice({
@@ -20,10 +22,13 @@ const slice = createSlice({
     setLanguage: (state, action: PayloadAction<UiState['language']>) => {
       state.language = action.payload;
     },
+    setViewWidth: (state, action: PayloadAction<UiState['viewWidth']>) => {
+      state.viewWidth = action.payload;
+    },
   },
 });
 
-export const { setLanguage } = slice.actions;
+export const { setLanguage, setViewWidth } = slice.actions;
 
 export default slice.reducer;
 

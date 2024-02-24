@@ -3,10 +3,11 @@ import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import BookView from '@/components/common/BookView/BookView.tsx';
+import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
+import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
 import styles from './ViewBookPage.module.scss';
-import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
 
 function ViewBookPage() {
   const location = useLocation();
@@ -15,6 +16,7 @@ function ViewBookPage() {
   const [isLoadingFailed, setIsLoadingFailed] = useState(false);
   const content = location.state?.data;
   const { id } = useParams();
+  const viewWidth = useAppSelector((s) => s.ui.viewWidth);
 
   const parseBookString = (str: string) => {
     const bookObj = parseBookXml(str)[1].FictionBook;
@@ -62,11 +64,16 @@ function ViewBookPage() {
   return (
     <div className={styles.page}>
       <ViewControl />
-      <div className={cn(styles.loadingContainer, { [styles.active]: isLoading })}>
-        <div className={styles.content}>Loading...</div>
+      <div
+        className={styles.content}
+        style={{ width: viewWidth === 'auto' ? '100%' : `${viewWidth}px` }}
+      >
+        <div className={cn(styles.loadingContainer, { [styles.active]: isLoading })}>
+          <div className={styles.loadingText}>Loading...</div>
+        </div>
+        {book && <BookView book={book} bookId={id!} />}
+        {isLoadingFailed && <div>Loading failed!</div>}
       </div>
-      {book && <BookView book={book} bookId={id!} />}
-      {isLoadingFailed && <div>Loading failed!</div>}
     </div>
   );
 }
