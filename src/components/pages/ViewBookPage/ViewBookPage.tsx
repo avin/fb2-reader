@@ -7,7 +7,6 @@ import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
 import styles from './ViewBookPage.module.scss';
 
-
 function ViewBookPage() {
   const location = useLocation();
   const [book, setBook] = useState<any>(null);
@@ -21,8 +20,10 @@ function ViewBookPage() {
     setBook(bookObj);
 
     // Пишем по книге метаданные
-    void booksDbManagerInstance.writeBookMeta(id!, {
-      ...getBookMetadata(bookObj),
+    void getBookMetadata(bookObj).then((metadata) => {
+      void booksDbManagerInstance.writeBookMeta(id!, {
+        ...metadata,
+      });
     });
 
     setIsLoading(false);
@@ -48,7 +49,7 @@ function ViewBookPage() {
     void (async () => {
       try {
         const bookString = await booksDbManagerInstance.readBookString(id!);
-        parseBookString(bookString);
+        parseBookString(bookString!);
       } catch (e) {
         setIsLoading(false);
         setIsLoadingFailed(true);

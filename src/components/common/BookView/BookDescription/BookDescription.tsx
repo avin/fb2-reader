@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import cn from 'clsx';
 import FormattedContent from '@/components/common/BookView/FormattedContent/FormattedContent.tsx';
+import { BookMeta } from '@/types';
 import { getBookMetadata } from '@/utils/fb2.ts';
 import styles from './BookDescription.module.scss';
 
@@ -9,9 +10,15 @@ interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
 }
 
 function BookDescription({ content, className, ...props }: Props) {
-  const data = useMemo(() => {
-    return getBookMetadata(content);
+  const [data, setData] = useState<BookMeta | null>(null);
+
+  useEffect(() => {
+    void getBookMetadata(content).then((result) => setData(result));
   }, [content]);
+
+  if (!data) {
+    return;
+  }
 
   return (
     <div className={cn(className)} {...props}>

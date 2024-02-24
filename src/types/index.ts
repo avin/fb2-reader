@@ -8,15 +8,25 @@ export type Translations =
 
 export type BookMeta = {
   genres: string[];
-  authors: { firstName?: string; lastName?: string }[];
+  authors: {
+    firstName?: string;
+    middleName?: string;
+    lastName?: string;
+    nickname?: string;
+    homePage?: string;
+    email?: string;
+  }[];
   bookTitle: string;
-  // coverPage: [{ image: []; ':@': { '@_xlink:href': '#_0.jpg' } }];
+  coverPageImgPreview?: string;
+  coverPage: [{ image: []; ':@': { '@_xlink:href': '#_0.jpg' } }];
   id: string;
+  annotation: any;
+  date: string;
 };
 
 export type BookProgress = {
   elementId?: string;
   progress: number;
   id: string;
-  lastReadTime: number
+  lastReadTime: number;
 };

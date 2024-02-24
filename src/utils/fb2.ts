@@ -1,4 +1,6 @@
 import fxparser from 'fast-xml-parser';
+import { BookMeta } from '@/types';
+import { resizeBase64Img } from '@/utils/image.ts';
 
 export function parseBookXml(content: string): any {
   const parser = new fxparser.XMLParser({
@@ -9,7 +11,7 @@ export function parseBookXml(content: string): any {
   return parser.parse(content);
 }
 
-export function getBookMetadata(bookObj: any) {
+export async function getBookMetadata(bookObj: any): Promise<BookMeta> {
   const descriptionBlock = bookObj.find((i) => Object.keys(i)[0] === 'description')['description'];
   const titleInfo = descriptionBlock.find((i) => Object.keys(i)[0] === 'title-info')['title-info'];
 
@@ -23,6 +25,30 @@ export function getBookMetadata(bookObj: any) {
   const annotation = titleInfo.find((i) => Object.keys(i)[0] === 'annotation')?.['annotation'];
   const coverPage = titleInfo.find((i) => Object.keys(i)[0] === 'coverpage')?.['coverpage'];
   const date = titleInfo.find((i) => Object.keys(i)[0] === 'date')?.['date'][0]?.['#text'];
+
+  const coverPageImgPreview = await (async () => {
+    const coverPageItem = coverPage.find((i) => !!i[':@']);
+    if (!coverPageItem) {
+      return undefined;
+    }
+
+    const hrefKey = Object.keys(coverPageItem[':@']).find((i) => i.endsWith(':href'))!;
+    if (!hrefKey) {
+      return;
+    }
+
+    const id = coverPageItem[':@'][hrefKey].replace(/^#/, '');
+    const binObj = bookObj.find((i) => {
+      return i.binary && i[':@']?.['@_id'] === id;
+    });
+
+    const base64Text = binObj.binary[0]['#text'].replace(/[^A-Za-z0-9+/]+/g, '');
+    const imageBase64Str = `data:${binObj[':@']['@_content-type']};base64,${base64Text}`;
+
+    const smallImageBase64Str = await resizeBase64Img(imageBase64Str, 100);
+
+    return smallImageBase64Str;
+  })();
 
   const authors = titleInfo
     .filter((i) => Object.keys(i)[0] === 'author')
@@ -45,11 +71,13 @@ export function getBookMetadata(bookObj: any) {
     });
 
   return {
+    id: '',
     genres,
     authors,
     bookTitle,
     annotation,
     date,
     coverPage,
+    coverPageImgPreview,
   };
 }

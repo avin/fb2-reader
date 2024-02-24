@@ -1,6 +1,7 @@
 @import '@/styles/mixins';
 
 .loadingContainer {
+  pointer-events: none;
   display: flex;
   z-index: 10;
   position: fixed;

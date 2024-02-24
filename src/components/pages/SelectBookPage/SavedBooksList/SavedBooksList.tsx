@@ -30,6 +30,8 @@ function SavedBooksList({ className, ...props }: Props) {
           return (
             <div key={id} className={styles.item}>
               <Link className={styles.openButton} to={routes.viewBook.replace(':id', id)}>
+                {meta.coverPageImgPreview && <img src={meta.coverPageImgPreview} alt="" className={styles.previewImg}/>}
+
                 <div className={styles.name}>{meta.bookTitle}</div>
                 {progress && <div className={styles.progress}>{progress.progress.toFixed(1)}%</div>}
               </Link>
