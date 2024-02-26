@@ -25,13 +25,13 @@ function SavedBooksList({ className, ...props }: Props) {
   }
 
   return (
-    <div className={cn(className, 'w-[800px] max-w-full space-y-2')} {...props}>
+    <div className={cn(className, 'w-full max-w-4xl space-y-2')} {...props}>
       {savedBooksList.map(({ id, meta, progress }) => {
         return (
           <Link
             to={routes.viewBook.replace(':id', id)}
             key={id}
-            className="flex overflow-hidden border border-slate-200 hover:border-slate-400 bg-white rounded-md space-x-2 transition"
+            className="flex overflow-hidden border border-slate-200 hover:border-slate-500 bg-white rounded-md space-x-2 transition"
           >
             <div className="flex p-2 flex-1">
               <div className="flex w-[50px] max-h-[100px] h-full">
@@ -62,7 +62,7 @@ function SavedBooksList({ className, ...props }: Props) {
               </button>
 
               {progress && (
-                <div className="text-sm text-slate-500">{progress.progress.toFixed(1)}%</div>
+                <div className="text-sm text-slate-500">{progress.progress.toFixed(0)}%</div>
               )}
             </div>
           </Link>

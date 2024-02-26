@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
+import { BookOpenIcon } from '@heroicons/react/24/outline';
 import cn from 'clsx';
 import SavedBooksList from '@/components/pages/SelectBookPage/SavedBooksList/SavedBooksList.tsx';
 import routes from '@/constants/routes.ts';
+import { loadSavedBooks } from '@/store/reducers/books.ts';
 import { hashString } from '@/utils/hash.ts';
-import styles from './SelectBookPage.module.scss';
-import {loadSavedBooks} from '@/store/reducers/books.ts';
-import {useAppDispatch} from '@/utils/hooks/useAppDispatch.ts';
+import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
 
 function SelectBookPage() {
   const [isDragging, setIsDragging] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   useEffectOnce(() => {
     void (async () => {
@@ -60,17 +61,29 @@ function SelectBookPage() {
 
   return (
     <div
-      className={cn(styles.page, { [styles.dragging]: isDragging })}
+      className={cn('flex flex-col justify-start items-center px-4', { '': isDragging })}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className={styles.dropBookArea}>
-        Drop a book onto this page or load it manually:
-        <input type="file" className={styles.openFileButton} onChange={handleFileChange} />
-      </div>
-      <SavedBooksList className="mt-4"/>
-
+      <button
+        type="button"
+        onClick={() => inputFileRef.current!.click()}
+        className="border-2 border-dashed border-slate-500 rounded-3xl p-8 flex flex-col items-center w-full max-w-2xl my-8"
+      >
+        <BookOpenIcon className="w-8 mb-2 text-slate-500" />
+        <p className="mt-1 text-lg text-gray-500">
+          <span className="text-blue-600">Upload a book file</span> or drag and drop
+        </p>
+        <input
+          type="file"
+          className="hidden"
+          onChange={handleFileChange}
+          ref={inputFileRef}
+          accept=".fb2,application/x-fictionbook+xml"
+        />
+      </button>
+      <SavedBooksList className="" />
     </div>
   );
 }
