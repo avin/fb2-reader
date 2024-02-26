@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import { debounce } from 'lodash-es';
 import BookDescription from '@/components/common/BookView/BookDescription/BookDescription.tsx';
 import BookProvider from '@/components/common/BookView/BookProvider/BookProvider.tsx';
+import { useBookProvider } from '@/components/common/BookView/BookProvider/useBookProvider.ts';
 import config from '@/config.ts';
 import { adjustScrollToElement, getScrollPercentage, getTopElement } from '@/utils/browser.ts';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
@@ -42,6 +43,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
       if (!topElement) {
         return;
       }
+      console.log('~~', topElement.dataset.id);
       void booksDbManagerInstance.writeBookProgress(bookId, {
         elementId: topElement.dataset.id,
         progress: getScrollPercentage(),

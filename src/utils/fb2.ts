@@ -27,27 +27,32 @@ export async function getBookMetadata(bookObj: any): Promise<BookMeta> {
   const date = titleInfo.find((i) => Object.keys(i)[0] === 'date')?.['date'][0]?.['#text'];
 
   const coverPageImgPreview = await (async () => {
-    const coverPageItem = coverPage.find((i) => !!i[':@']);
-    if (!coverPageItem) {
+    try {
+      const coverPageItem = coverPage.find((i) => !!i[':@']);
+      if (!coverPageItem) {
+        return undefined;
+      }
+
+      const hrefKey = Object.keys(coverPageItem[':@']).find((i) => i.endsWith(':href'))!;
+      if (!hrefKey) {
+        return;
+      }
+
+      const id = coverPageItem[':@'][hrefKey].replace(/^#/, '');
+      const binObj = bookObj.find((i) => {
+        return i.binary && i[':@']?.['@_id'] === id;
+      });
+
+      const base64Text = binObj.binary[0]['#text'].replace(/[^A-Za-z0-9+/]+/g, '');
+      const imageBase64Str = `data:${binObj[':@']['@_content-type']};base64,${base64Text}`;
+
+      const smallImageBase64Str = await resizeBase64Img(imageBase64Str, 100);
+
+      return smallImageBase64Str;
+    } catch (e) {
+      console.warn(e);
       return undefined;
     }
-
-    const hrefKey = Object.keys(coverPageItem[':@']).find((i) => i.endsWith(':href'))!;
-    if (!hrefKey) {
-      return;
-    }
-
-    const id = coverPageItem[':@'][hrefKey].replace(/^#/, '');
-    const binObj = bookObj.find((i) => {
-      return i.binary && i[':@']?.['@_id'] === id;
-    });
-
-    const base64Text = binObj.binary[0]['#text'].replace(/[^A-Za-z0-9+/]+/g, '');
-    const imageBase64Str = `data:${binObj[':@']['@_content-type']};base64,${base64Text}`;
-
-    const smallImageBase64Str = await resizeBase64Img(imageBase64Str, 100);
-
-    return smallImageBase64Str;
   })();
 
   const authors = titleInfo

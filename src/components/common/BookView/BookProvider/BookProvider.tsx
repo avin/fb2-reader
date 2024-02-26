@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, {ReactNode, useEffect, useRef} from 'react';
 
 interface BookProviderContextType {
   getBook: () => any;
@@ -16,6 +16,7 @@ interface BookProviderProps {
 
 function BookProvider({ children, book }: BookProviderProps) {
   const dataIdRef = useRef(0);
+  dataIdRef.current = 0;
 
   const contextValue = {
     getBook: () => book,

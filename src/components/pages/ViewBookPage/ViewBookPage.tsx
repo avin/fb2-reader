@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import BookView from '@/components/common/BookView/BookView.tsx';
 import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
+import { adjustScrollToElement } from '@/utils/browser.ts';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
 import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
+import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
 import styles from './ViewBookPage.module.scss';
 
 function ViewBookPage() {
@@ -17,6 +19,7 @@ function ViewBookPage() {
   const content = location.state?.data;
   const { id } = useParams();
   const viewWidth = useAppSelector((s) => s.ui.viewWidth);
+  const { scrollToTopElement } = useTopElementBeforeChangeWidth();
 
   const parseBookString = (str: string) => {
     const bookObj = parseBookXml(str)[1].FictionBook;
@@ -60,6 +63,10 @@ function ViewBookPage() {
       }
     })();
   });
+
+  useEffect(() => {
+    scrollToTopElement();
+  }, [scrollToTopElement, viewWidth]);
 
   return (
     <div className={styles.page}>

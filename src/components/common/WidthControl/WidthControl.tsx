@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
+import { getTopElement } from '@/utils/browser.ts';
 import styles from './WidthControl.module.scss';
+import {useTopElementBeforeChangeWidth} from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
 
 interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'> {
   onChange: (v: number | 'auto') => void;
@@ -10,9 +12,12 @@ interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'> 
 function WidthControl({ onChange, className, ...props }: Props) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(1);
+  const {setTopElement} = useTopElementBeforeChangeWidth();
+
 
   useEffectOnce(() => {
     let isDragging = false;
+
 
     const sliderEl = sliderRef.current;
     if (!sliderEl) {
@@ -38,6 +43,7 @@ function WidthControl({ onChange, className, ...props }: Props) {
     };
 
     const handleMouseDown = (event) => {
+      setTopElement(getTopElement());
       isDragging = true;
       move(event.clientX);
     };
