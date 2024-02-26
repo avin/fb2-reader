@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import cn from 'clsx';
 import { BookMeta } from '@/types';
-import styles from './Authors.module.scss';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
   authors: BookMeta['authors'];

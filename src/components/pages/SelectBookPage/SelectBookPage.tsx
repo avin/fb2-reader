@@ -69,7 +69,7 @@ function SelectBookPage() {
         Drop a book onto this page or load it manually:
         <input type="file" className={styles.openFileButton} onChange={handleFileChange} />
       </div>
-      <SavedBooksList className={styles.savedBooksList}/>
+      <SavedBooksList className="mt-4"/>
 
     </div>
   );
