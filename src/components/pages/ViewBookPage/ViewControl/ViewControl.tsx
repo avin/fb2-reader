@@ -5,13 +5,13 @@ import {
   Cog6ToothIcon,
   PaintBrushIcon,
   WrenchIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/solid';
 import cn from 'clsx';
 import WidthControl from '@/components/common/WidthControl/WidthControl.tsx';
 import routes from '@/constants/routes.ts';
 import { setViewWidth } from '@/store/reducers/ui.ts';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
-import styles from './ViewControl.module.scss';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {}
 
@@ -31,23 +31,30 @@ function ViewControl({ className, ...props }: Props) {
   );
 
   return (
-    <div className={cn(styles.container, className)} {...props}>
-      <div className={styles.buttons}>
-        <button type="button" onClick={handleClickBack}>
-          <ArrowLeftIcon />
-        </button>
-        <button type="button">
-          <Cog6ToothIcon />
-        </button>
-        <button type="button">
-          <PaintBrushIcon />
-        </button>
-        <button type="button">
-          <WrenchIcon />
-        </button>
-        <div className={styles.widthControlContainer}>
-          <WidthControl onChange={handleChangeWidth}></WidthControl>
+    <div
+      className={cn(
+        'fixed flex justify-between top-0 left-0 w-full bg-white shadow-xl text-slate-500 items-center',
+        className,
+      )}
+      {...props}
+    >
+      <div className="pl-4">
+        <div>Author</div>
+        <div>Title</div>
+      </div>
+      <div className="flex gap-8 items-center px-2">
+        <div className="flex gap-2">
+          <div className="text-sm">
+            Content width:
+          </div>
+          <div className="w-[200px]">
+            <WidthControl onChange={handleChangeWidth}></WidthControl>
+          </div>
         </div>
+
+        <button type="button" onClick={handleClickBack} className="size-8 hover:text-red-500">
+          <XMarkIcon />
+        </button>
       </div>
     </div>
   );

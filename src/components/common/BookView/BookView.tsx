@@ -112,7 +112,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
           const tag = Object.keys(item)[0];
           if (tag === 'body') {
             return (
-              <div className="p-5" key={idx}>
+              <div className="p-4" key={idx}>
                 <FormattedContent key={idx} content={item[tag]} />
               </div>
             );
