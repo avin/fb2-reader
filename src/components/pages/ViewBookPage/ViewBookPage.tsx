@@ -5,6 +5,7 @@ import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import BookView from '@/components/common/BookView/BookView.tsx';
 import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
+import { BookMeta } from '@/types';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
 import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
@@ -14,7 +15,7 @@ import styles from './ViewBookPage.module.scss';
 function ViewBookPage() {
   const location = useLocation();
   const [book, setBook] = useState<any>(null);
-  const [bookMeta, setBookMeta] = useState<any>(null);
+  const [bookMeta, setBookMeta] = useState<BookMeta | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFailed, setIsLoadingFailed] = useState(false);
   const content = location.state?.data;
@@ -86,7 +87,7 @@ function ViewBookPage() {
 
   return (
     <div className="relative">
-      <ViewControl />
+      {bookMeta && <ViewControl bookMeta={bookMeta} />}
       <div
         className="m-auto max-w-full min-w-[200px]"
         style={{ width: viewWidth === 'auto' ? '100%' : `${viewWidth}px` }}

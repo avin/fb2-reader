@@ -7,10 +7,13 @@ import WidthControl from '@/components/common/WidthControl/WidthControl.tsx';
 import routes from '@/constants/routes.ts';
 import { setViewWidth } from '@/store/reducers/ui.ts';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
+import {BookMeta} from '@/types';
 
-interface Props extends React.ComponentPropsWithoutRef<'div'> {}
+interface Props extends React.ComponentPropsWithoutRef<'div'> {
+  bookMeta: BookMeta
+}
 
-function ViewControl({ className, ...props }: Props) {
+function ViewControl({ bookMeta, className, ...props }: Props) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -60,7 +63,7 @@ function ViewControl({ className, ...props }: Props) {
       >
         <div className="pl-4">
           <div className="-mb-1">Author</div>
-          <div>Title</div>
+          <div>{bookMeta.bookTitle}</div>
         </div>
         <div className="flex items-center px-2 min-h-full">
           <div className="flex gap-2">
