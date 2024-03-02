@@ -1,8 +1,9 @@
 import React from 'react';
+import cn from 'clsx';
+import { useBookProvider } from '@/components/common/BookView/BookProvider/useBookProvider.ts';
 import styles from './FormattedContent.module.scss';
 import Image from '../Image/Image.tsx';
 import Link from '../Link/Link.tsx';
-import {useBookProvider} from '@/components/common/BookView/BookProvider/useBookProvider.ts';
 
 interface Props {
   content: any[0];
@@ -28,62 +29,67 @@ function FormattedContent({ content }: Props) {
         const commonTags = {
           p: {
             component: 'div',
-            className: styles.paragraph,
+            className: cn(styles.paragraph, 'paragraph'),
           },
           title: {
             component: 'div',
-            className: styles.title,
+            className: cn(styles.title, 'title'),
           },
           section: {
             component: 'div',
-            className: styles.section,
+            className: cn(styles.section, 'section'),
           },
           epigraph: {
             component: 'div',
-            className: styles.epigraph,
+            className: cn(styles.epigraph, 'epigraph'),
           },
           poem: {
             component: 'div',
-            className: styles.poem,
+            className: cn(styles.poem, 'poem'),
           },
           stanza: {
             component: 'div',
-            className: styles.stanza,
+            className: cn(styles.stanza, 'stanza'),
           },
           v: {
             component: 'div',
-            className: styles.v,
+            className: cn(styles.v, 'v'),
           },
           'text-author': {
             component: 'div',
-            className: styles.textAuthor,
+            className: cn(styles.textAuthor, 'textAuthor'),
           },
           subtitle: {
             component: 'div',
-            className: styles.subtitle,
+            className: cn(styles.subtitle, 'subtitle'),
           },
           cite: {
             component: 'div',
-            className: styles.cite,
+            className: cn(styles.cite, 'cite'),
           },
           code: {
             component: 'div',
-            className: styles.code,
+            className: cn(styles.code, 'code'),
           },
           sup: {
             component: 'sup',
+            className: cn(styles.sup, 'sup'),
           },
           sub: {
             component: 'sub',
+            className: cn(styles.sub, 'sub'),
           },
           strikethrough: {
             component: 's',
+            className: cn(styles.strikethrough, 'strikethrough'),
           },
           strong: {
             component: 'strong',
+            className: cn(styles.strong, 'strong'),
           },
           emphasis: {
             component: 'i',
+            className: cn(styles.emphasis, 'emphasis'),
           },
         };
 
@@ -91,7 +97,7 @@ function FormattedContent({ content }: Props) {
           const { component: Component, ...otherProps } = commonTags[tag];
           return (
             <Component {...commonProps} {...otherProps}>
-              <FormattedContent content={item[tag]}/>
+              <FormattedContent content={item[tag]} />
             </Component>
           );
         }
@@ -101,11 +107,20 @@ function FormattedContent({ content }: Props) {
         }
 
         if (tag === 'a') {
-          return <Link {...commonProps} className={styles.link} tooltipClassName={styles.linkTooltip} attributes={item} />;
+          return (
+            <Link
+              {...commonProps}
+              className={cn(styles.link, 'link')}
+              tooltipClassName={cn(styles.linkTooltip, 'linkTooltip')}
+              attributes={item}
+            />
+          );
         }
 
         if (tag === 'image') {
-          return <Image {...commonProps} attributes={item[':@']} className={styles.image} />;
+          return (
+            <Image {...commonProps} attributes={item[':@']} className={cn(styles.image, 'image')} />
+          );
         }
 
         if (tag === '#text') {
