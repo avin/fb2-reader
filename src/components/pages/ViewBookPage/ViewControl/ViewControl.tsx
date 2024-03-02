@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useEffectOnce } from 'react-use';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import cn from 'clsx';
 import WidthControl from '@/components/common/WidthControl/WidthControl.tsx';
@@ -36,6 +37,12 @@ function ViewControl({ className, ...props }: Props) {
       setIsMenuVisible(false);
     }, 1000);
   };
+
+  useEffectOnce(() => {
+    return () => {
+      clearTimeout(hideMenuTimeoutIdRef.current);
+    };
+  });
 
   return (
     <div

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
@@ -13,12 +14,14 @@ import styles from './ViewBookPage.module.scss';
 function ViewBookPage() {
   const location = useLocation();
   const [book, setBook] = useState<any>(null);
+  const [bookMeta, setBookMeta] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFailed, setIsLoadingFailed] = useState(false);
   const content = location.state?.data;
   const { id } = useParams();
   const viewWidth = useAppSelector((s) => s.ui.viewWidth);
   const { scrollToTopElement } = useTopElementBeforeChangeWidth();
+  const { t } = useTranslation();
 
   const parseBookString = (str: string) => {
     const bookObj = parseBookXml(str)[1].FictionBook;
@@ -26,6 +29,7 @@ function ViewBookPage() {
 
     // Пишем по книге метаданные
     void getBookMetadata(bookObj).then((metadata) => {
+      setBookMeta(metadata);
       void booksDbManagerInstance.writeBookMeta(id!, {
         ...metadata,
       });
@@ -66,6 +70,19 @@ function ViewBookPage() {
   useEffect(() => {
     scrollToTopElement();
   }, [scrollToTopElement, viewWidth]);
+
+  useEffect(() => {
+    if (bookMeta) {
+      console.log(bookMeta);
+      document.title = bookMeta.bookTitle;
+    } else {
+      document.title = t('pageTitle');
+    }
+
+    return () => {
+      document.title = t('pageTitle');
+    };
+  }, [bookMeta, t]);
 
   return (
     <div className="relative">

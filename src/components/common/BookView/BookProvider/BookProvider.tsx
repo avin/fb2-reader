@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useRef} from 'react';
+import React, { ReactNode, useRef } from 'react';
 
 interface BookProviderContextType {
   getBook: () => any;
