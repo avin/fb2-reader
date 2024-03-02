@@ -32,6 +32,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
   );
 
   const handleMouseOverTopArea = () => {
+    console.log(1);
     setIsMenuVisible(true);
     clearTimeout(hideMenuTimeoutIdRef.current);
   };
@@ -59,15 +60,18 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
 
   return (
     <div
-      className="h-[150px] fixed top-0 left-0 w-full"
+      className="h-[100px] fixed top-0 left-0 w-full"
       onMouseOver={handleMouseOverTopArea}
       onMouseLeave={handleMouseLeaveTopArea}
     >
       <div
         className={cn(
-          'absolute top-0 w-full flex justify-between bg-white shadow-lg text-slate-500 items-center h-12 -translate-y-full transition',
+          'absolute z-10 top-0 w-full flex justify-between bg-white shadow-lg text-slate-500 items-center h-12 transition',
           className,
-          { ['-translate-y-0']: isMenuVisible },
+          {
+            ['-translate-y-0']: isMenuVisible,
+            ['-translate-y-full']: !isMenuVisible,
+          },
         )}
         {...props}
       >

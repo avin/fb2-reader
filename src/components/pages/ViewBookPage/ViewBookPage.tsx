@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
-import cn from 'clsx';
 import BookView from '@/components/common/BookView/BookView.tsx';
+import LoadingBlock from '@/components/pages/ViewBookPage/LoadingBlock/LoadingBlock.tsx';
 import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
 import { BookMeta } from '@/types';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
 import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
 import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
-import styles from './ViewBookPage.module.scss';
 
 function ViewBookPage() {
   const location = useLocation();
@@ -92,9 +91,7 @@ function ViewBookPage() {
         className="m-auto max-w-full min-w-[200px]"
         style={{ width: viewWidth === 'auto' ? '100%' : `${viewWidth}px` }}
       >
-        <div className={cn(styles.loadingContainer, { [styles.active]: isLoading })}>
-          <div className={styles.loadingText}>Loading...</div>
-        </div>
+        <LoadingBlock active={isLoading} />
         {book && <BookView book={book} bookId={id!} />}
         {isLoadingFailed && <div>Loading failed!</div>}
       </div>

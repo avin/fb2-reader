@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
+import {debounce, throttle} from 'lodash-es';
 import { getTopElement } from '@/utils/browser.ts';
 import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
 
@@ -66,22 +67,31 @@ function WidthControl({ onChange, className, ...props }: Props) {
     };
   });
 
+  const throttledOnChange = useMemo(() => {
+    return throttle((val) => {
+      onChange(val);
+    }, 100);
+  }, [onChange]);
+
   useEffect(() => {
     if (position > 0.9) {
-      onChange('auto');
+      throttledOnChange('auto');
     } else {
-      onChange(position * (1 / 0.9) * document.body.clientWidth);
+      throttledOnChange(position * (1 / 0.9) * document.body.clientWidth);
     }
-  }, [onChange, position]);
+  }, [throttledOnChange, position]);
 
   return (
     <div
-      className={cn(className, 'flex relative items-center w-full h-5 cursor-pointer select-none')}
+      className={cn(
+        className,
+        'flex relative items-center w-full h-5 cursor-pointer select-none group',
+      )}
       ref={sliderRef}
     >
       <div className="relative w-full h-0.5 bg-slate-500">
         <div
-          className="absolute z-10 -translate-x-1/2 -translate-y-1/2 transform border-2 border-slate-500 bg-white rounded-full size-5"
+          className="absolute z-10 -translate-x-1/2 -translate-y-1/2 transform border-2 border-slate-500 bg-white rounded-full size-3 transition-size group-hover:size-5"
           style={{ left: `${position * 100}%` }}
         />
         {['0%', '90%', '100%'].map((leftPosition, idx) => {

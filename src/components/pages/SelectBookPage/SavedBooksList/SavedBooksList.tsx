@@ -25,7 +25,7 @@ function SavedBooksList({ className, ...props }: Props) {
   }
 
   return (
-    <div className={cn(className, 'w-full max-w-4xl space-y-2')} {...props}>
+    <div className={cn(className, 'w-full max-w-4xl space-y-2 pb-10')} {...props}>
       {savedBooksList.map(({ id, meta, progress }) => {
         return (
           <Link

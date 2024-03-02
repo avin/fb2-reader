@@ -1,0 +1,23 @@
+@import '@/styles/mixins';
+
+.container {
+  background-color: var(--main-bg-color);
+
+  &.fade-enter {
+    opacity: 0;
+  }
+
+  &.enter.enterActive {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+  }
+
+  &.exit {
+    opacity: 1;
+  }
+
+  &.exit.exitActive {
+    opacity: 0;
+    transition: opacity 300ms ease-in 300ms; /* Добавляем задержку перед началом исчезновения */
+  }
+}

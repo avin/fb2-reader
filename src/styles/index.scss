@@ -6,6 +6,18 @@
 @import 'mixins';
 @import 'accessibility';
 
+:root {
+  @each $palette-name, $palette in $colors {
+    @each $shade, $color in $palette {
+      --#{$palette-name}-#{$shade}: #{$color};
+    }
+  }
+
+  --main-bg-color: var(--slate-100);
+  --main-text-color: var(--slate-900);
+  --main-font-family: sans-serif;
+}
+
 html,
 body,
 #root {
@@ -13,6 +25,7 @@ body,
 }
 
 body {
-  font-family: sans-serif;
-  @apply bg-slate-100 text-slate-900;
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+  font-family: var(--main-font-family);
 }
