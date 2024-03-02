@@ -84,6 +84,13 @@ function ViewBookPage() {
     };
   }, [bookMeta, t]);
 
+  useEffectOnce(() => {
+    document.body.classList.add('with-scroll');
+    return () => {
+      document.body.classList.remove('with-scroll');
+    };
+  });
+
   return (
     <div className="relative">
       {bookMeta && <ViewControl bookMeta={bookMeta} />}

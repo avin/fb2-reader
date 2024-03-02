@@ -9,7 +9,7 @@
 :root {
   @each $palette-name, $palette in $colors {
     @each $shade, $color in $palette {
-      --#{$palette-name}-#{$shade}: #{$color};
+      --#{"" + $palette-name}-#{$shade}: #{$color};
     }
   }
 
@@ -28,4 +28,8 @@ body {
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
   font-family: var(--main-font-family);
+
+  &.with-scroll {
+    overflow-y: scroll;
+  }
 }
