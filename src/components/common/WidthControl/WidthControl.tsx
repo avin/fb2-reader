@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import { getTopElement } from '@/utils/browser.ts';
-import styles from './WidthControl.module.scss';
-import {useTopElementBeforeChangeWidth} from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
+import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
 
 interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'> {
   onChange: (v: number | 'auto') => void;
@@ -12,12 +11,10 @@ interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'> 
 function WidthControl({ onChange, className, ...props }: Props) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(1);
-  const {setTopElement} = useTopElementBeforeChangeWidth();
-
+  const { setTopElement } = useTopElementBeforeChangeWidth();
 
   useEffectOnce(() => {
     let isDragging = false;
-
 
     const sliderEl = sliderRef.current;
     if (!sliderEl) {
@@ -78,12 +75,26 @@ function WidthControl({ onChange, className, ...props }: Props) {
   }, [onChange, position]);
 
   return (
-    <div className={cn(className, styles.slider)} ref={sliderRef}>
-      <div className={styles.track}>
-        <div className={styles.thumb} style={{ left: `${position * 100}%` }} />
-        <div className={styles.separator} style={{ left: '0%' }} />
-        <div className={styles.separator} style={{ left: '90%' }} />
-        <div className={styles.separator} style={{ left: '100%' }} />
+    <div
+      className={cn(className, 'flex relative items-center w-full h-5 cursor-pointer select-none')}
+      ref={sliderRef}
+    >
+      <div className="relative w-full h-0.5 bg-slate-500">
+        <div
+          className="absolute z-10 -translate-x-1/2 -translate-y-1/2 transform border-2 border-slate-500 bg-white rounded-full size-5"
+          style={{ left: `${position * 100}%` }}
+        />
+        {['0%', '90%', '100%'].map((leftPosition, idx) => {
+          return (
+            <div
+              key={String(idx)}
+              className="absolute bg-slate-500 w-[2px] h-2 -translate-y-1/2 top-[50%]"
+              style={{
+                left: leftPosition,
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );

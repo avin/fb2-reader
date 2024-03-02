@@ -1,8 +1,6 @@
 @import '@/styles/mixins';
 
-.page {
-  position: relative;
-}
+
 
 .loadingContainer {
   display: flex;
@@ -36,10 +34,4 @@
       }
     }
   }
-}
-
-.content {
-  margin: auto;
-  max-width: 100%;
-  min-width: 200px;
 }

@@ -4,7 +4,6 @@ import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import BookView from '@/components/common/BookView/BookView.tsx';
 import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
-import { adjustScrollToElement } from '@/utils/browser.ts';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
 import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
@@ -69,10 +68,10 @@ function ViewBookPage() {
   }, [scrollToTopElement, viewWidth]);
 
   return (
-    <div className={styles.page}>
+    <div className="relative">
       <ViewControl />
       <div
-        className={styles.content}
+        className="m-auto max-w-full min-w-[200px]"
         style={{ width: viewWidth === 'auto' ? '100%' : `${viewWidth}px` }}
       >
         <div className={cn(styles.loadingContainer, { [styles.active]: isLoading })}>

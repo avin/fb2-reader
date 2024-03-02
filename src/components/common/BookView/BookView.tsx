@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
 import { debounce } from 'lodash-es';
 import BookDescription from '@/components/common/BookView/BookDescription/BookDescription.tsx';
 import BookProvider from '@/components/common/BookView/BookProvider/BookProvider.tsx';
-import { useBookProvider } from '@/components/common/BookView/BookProvider/useBookProvider.ts';
 import config from '@/config.ts';
 import { adjustScrollToElement, getScrollPercentage, getTopElement } from '@/utils/browser.ts';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
@@ -105,7 +104,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
         data-id="book"
         {...props}
       >
-        <div className={styles.bookDescription}>
+        <div className="mb-[100px] pb-[100px] border-b border-slate-400 p-5">
           <BookDescription content={book} />
         </div>
 
@@ -113,7 +112,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
           const tag = Object.keys(item)[0];
           if (tag === 'body') {
             return (
-              <div className={styles.body} key={idx}>
+              <div className="p-5" key={idx}>
                 <FormattedContent key={idx} content={item[tag]} />
               </div>
             );

@@ -12,24 +12,3 @@
     }
   }
 }
-
-.bookDescription {
-  margin-bottom: 100px;
-  padding: 20px;
-  padding-bottom: 100px;
-  border-bottom: 1px solid #999;
-
-  :global(.debug) & {
-    border: 1px solid black;
-    background-color: #f5b0d8;
-  }
-}
-
-.body {
-  padding: 20px;
-
-  :global(.debug) & {
-    border: 1px solid black;
-    background-color: lightgoldenrodyellow;
-  }
-}

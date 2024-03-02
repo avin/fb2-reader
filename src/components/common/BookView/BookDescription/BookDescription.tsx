@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cn from 'clsx';
 import FormattedContent from '@/components/common/BookView/FormattedContent/FormattedContent.tsx';
 import { BookMeta } from '@/types';
 import { getBookMetadata } from '@/utils/fb2.ts';
-import styles from './BookDescription.module.scss';
 
 interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
   content: any[];
