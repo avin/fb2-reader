@@ -1,16 +1,17 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
+import { BookOpenIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import cn from 'clsx';
 import WidthControl from '@/components/common/WidthControl/WidthControl.tsx';
 import routes from '@/constants/routes.ts';
 import { setViewWidth } from '@/store/reducers/ui.ts';
+import { BookMeta } from '@/types';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
-import {BookMeta} from '@/types';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
-  bookMeta: BookMeta
+  bookMeta: BookMeta;
 }
 
 function ViewControl({ bookMeta, className, ...props }: Props) {
@@ -47,9 +48,18 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
     };
   });
 
+  const authors = useMemo(() => {
+    const names = bookMeta.authors.map((author, idx) => {
+      return [author.firstName, author.nickname, author.middleName, author.lastName]
+        .filter(Boolean)
+        .join(' ');
+    });
+    return names.join(', ');
+  }, [bookMeta.authors]);
+
   return (
     <div
-      className="h-[200px] fixed top-0 left-0 w-full"
+      className="h-[150px] fixed top-0 left-0 w-full"
       onMouseOver={handleMouseOverTopArea}
       onMouseLeave={handleMouseLeaveTopArea}
     >
@@ -61,13 +71,23 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
         )}
         {...props}
       >
-        <div className="pl-4">
-          <div className="-mb-1">Author</div>
-          <div>{bookMeta.bookTitle}</div>
+        <div className="flex items-center pl-2">
+          <div>
+            <BookOpenIcon className="size-8" />
+          </div>
+          <div className="pl-2 overflow-hidden">
+            <div className="-mb-1 text-sm overflow-ellipsis whitespace-nowrap overflow-hidden">
+              {authors}
+            </div>
+            <div className="overflow-ellipsis whitespace-nowrap overflow-hidden font-semibold">
+              {bookMeta.bookTitle}
+            </div>
+          </div>
         </div>
+
         <div className="flex items-center px-2 min-h-full">
-          <div className="flex gap-2">
-            <div className="text-sm">Content width:</div>
+          <div className="flex gap-2 items-center">
+            <div className="text-sm text-right">Width:</div>
             <div className="w-[200px] px-2">
               <WidthControl onChange={handleChangeWidth}></WidthControl>
             </div>
