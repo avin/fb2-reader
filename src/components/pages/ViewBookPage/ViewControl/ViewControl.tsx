@@ -5,10 +5,12 @@ import { BookOpenIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import cn from 'clsx';
 import WidthControl from '@/components/common/WidthControl/WidthControl.tsx';
+import styles from './ViewControl.module.scss';
 import routes from '@/constants/routes.ts';
 import { setViewWidth } from '@/store/reducers/ui.ts';
 import { BookMeta } from '@/types';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
+import { CSSTransition } from 'react-transition-group';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
   bookMeta: BookMeta;
@@ -40,7 +42,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
   const handleMouseLeaveTopArea = () => {
     hideMenuTimeoutIdRef.current = setTimeout(() => {
       setIsMenuVisible(false);
-    }, 1000);
+    }, 500);
   };
 
   useEffectOnce(() => {
@@ -64,46 +66,54 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
       onMouseOver={handleMouseOverTopArea}
       onMouseLeave={handleMouseLeaveTopArea}
     >
-      <div
-        className={cn(
-          'absolute z-10 top-0 w-full flex justify-between bg-white shadow-lg text-slate-500 items-center h-12 transition',
-          className,
-          {
-            ['-translate-y-0']: isMenuVisible,
-            ['-translate-y-full']: !isMenuVisible,
-          },
-        )}
-        {...props}
+      <CSSTransition
+        in={isMenuVisible}
+        timeout={150} // Общее время для анимации включает 300мс задержки + 300мс анимации
+        classNames={{ ...styles }}
+        unmountOnExit
       >
-        <div className="flex items-center pl-2">
-          <div>
-            <BookOpenIcon className="size-8" />
+        <div
+          className={cn(
+            'absolute z-10 top-0 w-full flex justify-between bg-white shadow-lg text-slate-500 items-center h-12',
+            styles.menuBar,
+            className,
+            // {
+            //   ['-translate-y-0']: isMenuVisible,
+            //   ['-translate-y-full']: !isMenuVisible,
+            // },
+          )}
+          {...props}
+        >
+          <div className="flex items-center pl-2">
+            <div>
+              <BookOpenIcon className="size-8" />
+            </div>
+            <div className="pl-2 overflow-hidden">
+              <div className="-mb-1 text-sm overflow-ellipsis whitespace-nowrap overflow-hidden">
+                {authors}
+              </div>
+              <div className="overflow-ellipsis whitespace-nowrap overflow-hidden font-semibold">
+                {bookMeta.bookTitle}
+              </div>
+            </div>
           </div>
-          <div className="pl-2 overflow-hidden">
-            <div className="-mb-1 text-sm overflow-ellipsis whitespace-nowrap overflow-hidden">
-              {authors}
+
+          <div className="flex items-center px-2 min-h-full">
+            <div className="flex gap-2 items-center">
+              <div className="text-sm text-right">Width:</div>
+              <div className="w-[200px] px-2">
+                <WidthControl onChange={handleChangeWidth}></WidthControl>
+              </div>
             </div>
-            <div className="overflow-ellipsis whitespace-nowrap overflow-hidden font-semibold">
-              {bookMeta.bookTitle}
-            </div>
+
+            <div className="h-10 w-[1px] bg-slate-300 ml-4 mr-2" />
+
+            <button type="button" onClick={handleClickBack} className="size-8 hover:text-red-500">
+              <XMarkIcon />
+            </button>
           </div>
         </div>
-
-        <div className="flex items-center px-2 min-h-full">
-          <div className="flex gap-2 items-center">
-            <div className="text-sm text-right">Width:</div>
-            <div className="w-[200px] px-2">
-              <WidthControl onChange={handleChangeWidth}></WidthControl>
-            </div>
-          </div>
-
-          <div className="h-10 w-[1px] bg-slate-300 ml-4 mr-2" />
-
-          <button type="button" onClick={handleClickBack} className="size-8 hover:text-red-500">
-            <XMarkIcon />
-          </button>
-        </div>
-      </div>
+      </CSSTransition>
     </div>
   );
 }

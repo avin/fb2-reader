@@ -1,0 +1,24 @@
+.menuBar{
+  &.enter {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  &.enterActive {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 150ms ease-in-out;
+  }
+
+  &.exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.exitActive {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 150ms ease-in-out;
+  }
+
+}
