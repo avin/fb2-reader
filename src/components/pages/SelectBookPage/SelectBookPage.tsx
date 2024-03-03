@@ -34,13 +34,30 @@ function SelectBookPage() {
   const readFileContent = (file: File) => {
     const reader = new FileReader();
     reader.onload = async (e: ProgressEvent<FileReader>) => {
-      const content = e.target?.result as string;
+      const buffer = e.target?.result as ArrayBuffer;
+
+      // Используем TextDecoder для декодирования первой части файла и извлечения кодировки
+      const initialDecoder = new TextDecoder('utf-8');
+      const initialContent = initialDecoder.decode(buffer.slice(0, 1024)); // Читаем первые 1024 байта для безопасности
+      const encodingMatch = initialContent.match(/encoding="([^"]+)"/);
+      let content: string;
+
+      if (encodingMatch && encodingMatch[1]) {
+        // Если найдена кодировка и она отличается от utf-8, декодируем с правильной кодировкой
+        const actualEncoding = encodingMatch[1];
+        const decoder = new TextDecoder(actualEncoding);
+        content = decoder.decode(buffer);
+      } else {
+        // Если кодировка не найдена или utf-8, используем уже прочитанное содержимое
+        content = initialContent;
+      }
+
       if (content) {
         const hash: string = await hashString(content);
         navigate(routes.viewBook.replace(':id', hash), { state: { data: content } });
       }
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
   };
 
   const handleDrop = (e) => {
