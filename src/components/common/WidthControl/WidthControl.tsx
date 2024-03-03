@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import cn from 'clsx';
-import {debounce, throttle} from 'lodash-es';
+import { throttle } from 'lodash-es';
 import { getTopElement } from '@/utils/browser.ts';
 import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
 
@@ -13,6 +13,8 @@ function WidthControl({ onChange, className, ...props }: Props) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(1);
   const { setTopElement } = useTopElementBeforeChangeWidth();
+
+  const throttledOnChange = useMemo(() => throttle(onChange, 100), [onChange]);
 
   useEffectOnce(() => {
     let isDragging = false;
@@ -33,10 +35,21 @@ function WidthControl({ onChange, className, ...props }: Props) {
 
       const offsetPercent = pos / sliderRect.width;
 
+      let newPos = -1;
       if (offsetPercent < 0.9) {
-        setPosition(offsetPercent);
+        newPos = offsetPercent;
       } else if (offsetPercent > 0.975) {
-        setPosition(1);
+        newPos = 1;
+      }
+
+      if (newPos !== -1) {
+        setPosition(newPos);
+
+        if (newPos > 0.9) {
+          throttledOnChange('auto');
+        } else {
+          throttledOnChange(newPos * (1 / 0.9) * document.body.clientWidth);
+        }
       }
     };
 
@@ -66,20 +79,6 @@ function WidthControl({ onChange, className, ...props }: Props) {
       document.removeEventListener('mouseleave', handleMouseUp);
     };
   });
-
-  const throttledOnChange = useMemo(() => {
-    return throttle((val) => {
-      onChange(val);
-    }, 100);
-  }, [onChange]);
-
-  useEffect(() => {
-    if (position > 0.9) {
-      throttledOnChange('auto');
-    } else {
-      throttledOnChange(position * (1 / 0.9) * document.body.clientWidth);
-    }
-  }, [throttledOnChange, position]);
 
   return (
     <div

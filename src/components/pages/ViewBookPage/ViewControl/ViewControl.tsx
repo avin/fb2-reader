@@ -62,7 +62,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
 
   return (
     <div
-      className="h-[100px] fixed top-0 left-0 w-full"
+      className="h-[90px] fixed top-0 left-0 w-full"
       onMouseOver={handleMouseOverTopArea}
       onMouseLeave={handleMouseLeaveTopArea}
     >
