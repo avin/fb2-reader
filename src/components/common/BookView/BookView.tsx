@@ -42,7 +42,6 @@ function BookView({ book, bookId, className, ...props }: Props) {
       if (!topElement) {
         return;
       }
-      console.log('~~', topElement.dataset.id);
       void booksDbManagerInstance.writeBookProgress(bookId, {
         elementId: topElement.dataset.id,
         progress: getScrollPercentage(),

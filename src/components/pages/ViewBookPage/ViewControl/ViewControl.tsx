@@ -11,6 +11,7 @@ import { setViewWidth } from '@/store/reducers/ui.ts';
 import { BookMeta } from '@/types';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
 import { CSSTransition } from 'react-transition-group';
+import {useAppSelector} from '@/utils/hooks/useAppSelector.ts';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
   bookMeta: BookMeta;
@@ -21,6 +22,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
   const dispatch = useAppDispatch();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const hideMenuTimeoutIdRef = useRef<ReturnType<typeof setTimeout>>();
+  const viewWidth = useAppSelector(s => s.ui.viewWidth);
 
   const handleClickBack = () => {
     navigate(routes.selectBook);
@@ -34,7 +36,6 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
   );
 
   const handleMouseOverTopArea = () => {
-    console.log(1);
     setIsMenuVisible(true);
     clearTimeout(hideMenuTimeoutIdRef.current);
   };
@@ -102,7 +103,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
             <div className="flex gap-2 items-center">
               <div className="text-sm text-right">Width:</div>
               <div className="w-[200px] px-2">
-                <WidthControl onChange={handleChangeWidth}></WidthControl>
+                <WidthControl onChange={handleChangeWidth} initialValue={viewWidth}></WidthControl>
               </div>
             </div>
 

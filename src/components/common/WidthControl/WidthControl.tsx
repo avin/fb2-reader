@@ -7,14 +7,27 @@ import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBefor
 
 interface Props extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'> {
   onChange: (v: number | 'auto') => void;
+  initialValue?: number | 'auto';
 }
 
-function WidthControl({ onChange, className, ...props }: Props) {
+function WidthControl({ onChange, initialValue, className, ...props }: Props) {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(1);
   const { setTopElement } = useTopElementBeforeChangeWidth();
 
   const throttledOnChange = useMemo(() => throttle(onChange, 100), [onChange]);
+
+  useEffectOnce(() => {
+    if (initialValue === undefined) {
+      return;
+    }
+    if (initialValue === 'auto') {
+      setPosition(1);
+    } else {
+      const offsetPercent = Math.min(initialValue / ((1 / 0.9) * document.body.clientWidth), 0.9);
+      setPosition(offsetPercent);
+    }
+  });
 
   useEffectOnce(() => {
     let isDragging = false;

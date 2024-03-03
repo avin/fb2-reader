@@ -73,7 +73,6 @@ function ViewBookPage() {
 
   useEffect(() => {
     if (bookMeta) {
-      console.log(bookMeta);
       document.title = bookMeta.bookTitle;
     } else {
       document.title = t('pageTitle');
