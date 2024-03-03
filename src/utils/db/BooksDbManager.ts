@@ -31,10 +31,6 @@ export class BooksDbManager {
   }
 
   async removeBook(id: string) {
-    await Promise.all([
-      this.dbClient.delete('bookProgresses', id),
-      this.dbClient.delete('bookMetas', id),
-      this.dbClient.delete('bookStrings', id),
-    ]);
+    await Promise.all([this.dbClient.delete('bookStrings', id)]);
   }
 }

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import BookView from '@/components/common/BookView/BookView.tsx';
+import BookContainer from '@/components/pages/ViewBookPage/BookContainer/BookContainer.tsx';
 import LoadingBlock from '@/components/pages/ViewBookPage/LoadingBlock/LoadingBlock.tsx';
 import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
 import { addBook } from '@/store/reducers/books.ts';
@@ -10,7 +11,6 @@ import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
-import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
 
 function ViewBookPage() {
   const location = useLocation();
@@ -19,8 +19,6 @@ function ViewBookPage() {
   const [isLoadingFailed, setIsLoadingFailed] = useState(false);
   const content = location.state?.data;
   const { id } = useParams();
-  const viewWidth = useAppSelector((s) => s.ui.viewWidth);
-  const { scrollToTopElement } = useTopElementBeforeChangeWidth();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const bookMeta = useAppSelector((s) => s.books.metas[id!]);
@@ -67,10 +65,6 @@ function ViewBookPage() {
   });
 
   useEffect(() => {
-    scrollToTopElement();
-  }, [scrollToTopElement, viewWidth]);
-
-  useEffect(() => {
     if (bookMeta) {
       document.title = bookMeta.bookTitle;
     } else {
@@ -92,14 +86,12 @@ function ViewBookPage() {
   return (
     <div className="relative">
       {bookMeta && <ViewControl bookMeta={bookMeta} />}
-      <div
-        className="m-auto max-w-full min-w-[200px]"
-        style={{ width: viewWidth === 'auto' ? '100%' : `${viewWidth}px` }}
-      >
+
+      <BookContainer>
         <LoadingBlock active={isLoading} />
         {book && <BookView book={book} bookId={id!} />}
         {isLoadingFailed && <div>Loading failed!</div>}
-      </div>
+      </BookContainer>
     </div>
   );
 }
