@@ -1,64 +1,49 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import type { AppThunkAction } from '@/store/configureStore';
 import { BookMeta, BookProgress } from '@/types';
-import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 
 export type BooksState = {
-  // Язык страницы пришедший в query-параметрах
-  savedBooks: Record<string, { id: string; meta: BookMeta; progress: BookProgress }>;
+  progresses: Record<string, BookProgress>;
+  metas: Record<string, BookMeta>;
 };
 
 const initialState: BooksState = {
-  savedBooks: {},
+  progresses: {},
+  metas: {},
 };
 
 const slice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    setSavedBooks: (state, action: PayloadAction<BooksState['savedBooks']>) => {
-      state.savedBooks = action.payload;
+    setMeta: (state, action: PayloadAction<{ id: string; meta: BookMeta }>) => {
+      const { id, meta } = action.payload;
+      state.metas[id] = meta;
+    },
+    setProgress: (state, action: PayloadAction<{ id: string; progress: BookProgress }>) => {
+      const { id, progress } = action.payload;
+      state.progresses[id] = progress;
+    },
+    removeBook: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      delete state.metas[id];
+      delete state.progresses[id];
     },
   },
 });
 
-export const { setSavedBooks } = slice.actions;
+export const { removeBook, setProgress, setMeta } = slice.actions;
 
 export default slice.reducer;
 
-export function loadSavedBooks(): AppThunkAction<Promise<void>> {
+export function addBook(id: string, meta: BookMeta): AppThunkAction<void> {
   return async (dispatch, getState) => {
-    const metas = await booksDbManagerInstance.getAllBookMetas();
-    const progresses = await booksDbManagerInstance.getAllBookProgresses();
-
-    const results = {};
-    for (const meta of metas) {
-      const id = meta.id;
-      results[id] = {
-        id: id,
-        meta: meta,
-        progress: progresses.find((i) => i.id === id),
-      };
-    }
-
-    dispatch(setSavedBooks(results));
+    dispatch(setMeta({ id, meta }));
   };
 }
 
-export function removeBook(id: string): AppThunkAction<Promise<void>> {
+export function setBookProgress(id: string, progress: BookProgress): AppThunkAction<void> {
   return async (dispatch, getState) => {
-    void booksDbManagerInstance.removeBook(id);
-
-    const newSavedBooks = Object.entries(getState().books.savedBooks).reduce(
-      (acc, [key, value]) => {
-        if (key !== id) {
-          acc[key] = value;
-        }
-        return acc;
-      },
-      {},
-    );
-
-    dispatch(setSavedBooks(newSavedBooks));
+    dispatch(setProgress({ id, progress }));
   };
 }

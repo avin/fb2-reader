@@ -5,21 +5,12 @@ import { BookOpenIcon } from '@heroicons/react/24/outline';
 import cn from 'clsx';
 import SavedBooksList from '@/components/pages/SelectBookPage/SavedBooksList/SavedBooksList.tsx';
 import routes from '@/constants/routes.ts';
-import { loadSavedBooks } from '@/store/reducers/books.ts';
 import { hashString } from '@/utils/hash.ts';
-import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
 
 function SelectBookPage() {
   const [isDragging, setIsDragging] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const inputFileRef = useRef<HTMLInputElement>(null);
-
-  useEffectOnce(() => {
-    void (async () => {
-      void dispatch(loadSavedBooks());
-    })();
-  });
 
   const handleDragOver = (e) => {
     e.preventDefault(); // Необходимо для возможности сбросить файл

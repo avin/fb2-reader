@@ -33,6 +33,7 @@ function Image({ attributes, className, ...props }: Props) {
     return null;
   }
 
+
   return (
     <div className={cn(className)} {...props}>
       <img src={imgSrc} alt="" />

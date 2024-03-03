@@ -6,6 +6,7 @@ import Authors from '@/components/pages/SelectBookPage/SavedBooksList/Authors/Au
 import routes from '@/constants/routes.ts';
 import { removeBook } from '@/store/reducers/books.ts';
 import { savedBooksListSelector } from '@/store/selectors.ts';
+import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
 
@@ -17,7 +18,9 @@ function SavedBooksList({ className, ...props }: Props) {
 
   const createRemoveBookHandler = (id: string) => (e) => {
     e.preventDefault();
-    void dispatch(removeBook(id));
+
+    dispatch(removeBook(id));
+    void booksDbManagerInstance.removeBook(id);
   };
 
   if (!savedBooksList.length) {

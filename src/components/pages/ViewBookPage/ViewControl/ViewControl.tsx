@@ -78,10 +78,6 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
             'absolute z-10 top-0 w-full flex justify-between bg-white shadow-lg text-slate-500 items-center h-12',
             styles.menuBar,
             className,
-            // {
-            //   ['-translate-y-0']: isMenuVisible,
-            //   ['-translate-y-full']: !isMenuVisible,
-            // },
           )}
           {...props}
         >

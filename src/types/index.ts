@@ -19,7 +19,6 @@ export type BookMeta = {
   bookTitle: string;
   coverPageImgPreview?: string;
   coverPage: [{ image: []; ':@': { '@_xlink:href': '#_0.jpg' } }];
-  id: string;
   annotation: any;
   date: string;
 };
@@ -27,10 +26,6 @@ export type BookMeta = {
 export type BookProgress = {
   elementId?: string;
   progress: number;
-  id: string;
   lastReadTime: number;
 };
 
-export type Settings = {
-
-}

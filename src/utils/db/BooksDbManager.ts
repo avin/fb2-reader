@@ -1,4 +1,4 @@
-import { BookMeta, BookProgress, Settings } from '@/types';
+import { RootState } from '@/store/reducers';
 import { IndexedDBClient } from '@/utils/db/IndexedDBClient.ts';
 
 export class BooksDbManager {
@@ -7,9 +7,7 @@ export class BooksDbManager {
   static async open() {
     const dbClient = await IndexedDBClient.open('fb2Reader', 3, [
       { name: 'bookStrings', options: { keyPath: 'id' } },
-      { name: 'bookMetas', options: { keyPath: 'id' } },
-      { name: 'bookProgresses', options: { keyPath: 'id' } },
-      { name: 'settings', options: { keyPath: 'id' } },
+      { name: 'state', options: { keyPath: 'id' } },
     ]);
     return new BooksDbManager(dbClient);
   }
@@ -23,38 +21,12 @@ export class BooksDbManager {
     return data?.content;
   }
 
-  async writeBookMeta(id: string, data: BookMeta) {
-    return this.dbClient.write('bookMetas', { ...data, id });
+  async writeState(data: RootState) {
+    return this.dbClient.write('state', { id: 'root', data });
   }
 
-  async readBookMeta(id: string) {
-    const data = await this.dbClient.read<BookMeta>('bookMetas', id);
-    return data;
-  }
-
-  async getAllBookMetas() {
-    return this.dbClient.readAll<BookMeta>('bookMetas');
-  }
-
-  async getAllBookProgresses() {
-    return this.dbClient.readAll<BookProgress>('bookProgresses');
-  }
-
-  async writeBookProgress(id: string, data: MakeOptional<BookProgress, 'id'>) {
-    return this.dbClient.write('bookProgresses', { ...data, id });
-  }
-
-  async readBookProgress(id: string) {
-    const data = await this.dbClient.read<BookProgress>('bookProgresses', id);
-    return data;
-  }
-
-  async writeSettings(id: string, data: Settings) {
-    return this.dbClient.write('settings', { id: 'root', data });
-  }
-
-  async readSettings(id: string) {
-    const data = await this.dbClient.read<{ id: 'root'; data: Settings }>('settings', id);
+  async readState() {
+    const data = await this.dbClient.read<{ id: 'root'; data: RootState }>('state', 'root');
     return data?.data;
   }
 

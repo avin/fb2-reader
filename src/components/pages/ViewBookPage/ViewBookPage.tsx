@@ -5,16 +5,16 @@ import { useEffectOnce } from 'react-use';
 import BookView from '@/components/common/BookView/BookView.tsx';
 import LoadingBlock from '@/components/pages/ViewBookPage/LoadingBlock/LoadingBlock.tsx';
 import ViewControl from '@/components/pages/ViewBookPage/ViewControl/ViewControl.tsx';
-import { BookMeta } from '@/types';
+import { addBook } from '@/store/reducers/books.ts';
 import { booksDbManagerInstance } from '@/utils/db/booksDbManagerInstance.ts';
 import { getBookMetadata, parseBookXml } from '@/utils/fb2.ts';
+import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
 import { useTopElementBeforeChangeWidth } from '@/utils/hooks/useTopElementBeforeChangeWidth.ts';
 
 function ViewBookPage() {
   const location = useLocation();
   const [book, setBook] = useState<any>(null);
-  const [bookMeta, setBookMeta] = useState<BookMeta | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFailed, setIsLoadingFailed] = useState(false);
   const content = location.state?.data;
@@ -22,6 +22,8 @@ function ViewBookPage() {
   const viewWidth = useAppSelector((s) => s.ui.viewWidth);
   const { scrollToTopElement } = useTopElementBeforeChangeWidth();
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const bookMeta = useAppSelector((s) => s.books.metas[id!]);
 
   const parseBookString = (str: string) => {
     const bookObj = parseBookXml(str)[1].FictionBook;
@@ -29,10 +31,7 @@ function ViewBookPage() {
 
     // Пишем по книге метаданные
     void getBookMetadata(bookObj).then((metadata) => {
-      setBookMeta(metadata);
-      void booksDbManagerInstance.writeBookMeta(id!, {
-        ...metadata,
-      });
+      dispatch(addBook(id!, metadata));
     });
 
     setIsLoading(false);
