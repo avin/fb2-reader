@@ -7,12 +7,12 @@ import type { Language } from '@/types';
 export type UiState = {
   // Язык страницы пришедший в query-параметрах
   language: Language;
-  viewWidth: number|'auto';
+  viewWidth: number | 'auto';
 };
 
 const initialState: UiState = {
   language: config.defaultLanguage,
-  viewWidth: 'auto'
+  viewWidth: 'auto',
 };
 
 const slice = createSlice({

@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       transitionProperty: {
-        'size': 'height, width',
-      }
+        size: 'height, width',
+      },
     },
   },
   plugins: [],

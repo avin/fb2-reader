@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import cn from 'clsx';
 import FormattedContent from '@/components/common/BookView/FormattedContent/FormattedContent.tsx';
 import { BookMeta } from '@/types';
 import { getBookMetadata } from '@/utils/fb2.ts';
@@ -20,52 +19,26 @@ function BookDescription({ content, className, ...props }: Props) {
   }
 
   return (
-    <div className={cn(className)} {...props}>
-      <div>
-        <div>
-          <b>Genres:</b> {data.genres.join(', ')}
-        </div>
-        <div>
-          <b>Authors:</b>{' '}
-          {data.authors.map((author, idx) => {
-            const name = [author.firstName, author.nickname, author.middleName, author.lastName]
+    <div>
+      <div className="text-xl text-center font-bold mb-2">{data.bookTitle}</div>
+      <div className="text-sm text-center italic mb-4">
+        {data.authors
+          .map((author, idx) => {
+            return [author.firstName, author.nickname, author.middleName, author.lastName]
               .filter(Boolean)
               .join(' ');
-            return (
-              <div key={idx}>
-                <div>{name}</div>
-                {author.homePage && (
-                  <div>
-                    HomePage: <a href={author.homePage}>{author.homePage}</a>
-                  </div>
-                )}
-
-                {author.email && (
-                  <div>
-                    Email: {author.email && <a href={`mailto:${author.email}`}>{author.email}</a>}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          })
+          .join(', ')}
+      </div>
+      {data.coverPage && (
+        <div className="max-w-[400px] m-auto my-12">
+          <FormattedContent content={data.coverPage} />
         </div>
-        <div>
-          <b>BookTitle:</b> {data.bookTitle}
-        </div>
+      )}
+      <div>
         {data.annotation && (
-          <div>
-            <b>Annotation:</b>
+          <div className="text-sm">
             <FormattedContent content={data.annotation} />
-          </div>
-        )}
-        {data.date && (
-          <div>
-            <b>date:</b> {data.date}
-          </div>
-        )}
-        {data.coverPage && (
-          <div>
-            <b>coverPage:</b> <FormattedContent content={data.coverPage} />
           </div>
         )}
       </div>

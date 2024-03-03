@@ -1,7 +1,7 @@
 import { Reducer, combineReducers } from '@reduxjs/toolkit';
 import { UnknownAction } from 'redux';
-import ui from './ui';
 import books from './books';
+import ui from './ui';
 
 const rootReducer = combineReducers({
   ui,

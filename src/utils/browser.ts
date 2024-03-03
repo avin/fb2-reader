@@ -19,8 +19,7 @@ export function adjustScrollToElement(element: HTMLElement) {
   }
 }
 
-
-export function getTopElement(){
+export function getTopElement() {
   const elements = document.querySelectorAll('[data-id=book] [data-id]'); // Селектор ваших элементов
   let closestElement: any = null;
   let closestElementOffset = Number.MAX_VALUE;

@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import cn from 'clsx';
 
-
 interface Props extends React.ComponentPropsWithoutRef<'a'> {
   tooltipClassName: string;
   attributes: any;

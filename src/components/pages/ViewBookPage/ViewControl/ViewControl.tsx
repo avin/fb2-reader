@@ -1,17 +1,17 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 import { useEffectOnce } from 'react-use';
 import { BookOpenIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import cn from 'clsx';
 import WidthControl from '@/components/common/WidthControl/WidthControl.tsx';
-import styles from './ViewControl.module.scss';
 import routes from '@/constants/routes.ts';
 import { setViewWidth } from '@/store/reducers/ui.ts';
 import { BookMeta } from '@/types';
 import { useAppDispatch } from '@/utils/hooks/useAppDispatch.ts';
-import { CSSTransition } from 'react-transition-group';
-import {useAppSelector} from '@/utils/hooks/useAppSelector.ts';
+import { useAppSelector } from '@/utils/hooks/useAppSelector.ts';
+import styles from './ViewControl.module.scss';
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
   bookMeta: BookMeta;
@@ -22,7 +22,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
   const dispatch = useAppDispatch();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const hideMenuTimeoutIdRef = useRef<ReturnType<typeof setTimeout>>();
-  const viewWidth = useAppSelector(s => s.ui.viewWidth);
+  const viewWidth = useAppSelector((s) => s.ui.viewWidth);
 
   const handleClickBack = () => {
     navigate(routes.selectBook);

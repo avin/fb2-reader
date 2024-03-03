@@ -1,4 +1,4 @@
-export function resizeBase64Img(base64: string, size:number): Promise<string> {
+export function resizeBase64Img(base64: string, size: number): Promise<string> {
   return new Promise((resolve, reject) => {
     // Создаем новый объект изображения
     const img = new Image();

@@ -28,4 +28,3 @@ export type BookProgress = {
   progress: number;
   lastReadTime: number;
 };
-
