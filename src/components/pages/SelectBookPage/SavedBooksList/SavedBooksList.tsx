@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import cn from 'clsx';
+import RemoveBookDialog from '@/components/common/RemoveBookDialog/RemoveBookDialog.tsx';
 import Authors from '@/components/pages/SelectBookPage/SavedBooksList/Authors/Authors.tsx';
 import routes from '@/constants/routes.ts';
 import { removeBook } from '@/store/reducers/books.ts';
@@ -15,12 +16,23 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {}
 function SavedBooksList({ className, ...props }: Props) {
   const savedBooksList = useAppSelector(savedBooksListSelector);
   const dispatch = useAppDispatch();
+  const [removingBookId, setRemovingBookId] = useState(null);
 
-  const createRemoveBookHandler = (id: string) => (e) => {
+  const handleClickRemoveBook = (e) => {
     e.preventDefault();
+    const bookId = e.currentTarget.dataset.bookId;
+    setRemovingBookId(bookId);
+  };
 
-    dispatch(removeBook(id));
-    void booksDbManagerInstance.removeBook(id);
+  const handleConfirmRemoveDialog = () => {
+    if (!removingBookId) {
+      return;
+    }
+
+    dispatch(removeBook(removingBookId));
+    void booksDbManagerInstance.removeBook(removingBookId);
+
+    setRemovingBookId(null);
   };
 
   if (!savedBooksList.length) {
@@ -59,7 +71,8 @@ function SavedBooksList({ className, ...props }: Props) {
               <button
                 type="button"
                 className="p-2 -mr-2 -mt-2 rounded-bl-md transition hover:bg-red-100"
-                onClick={createRemoveBookHandler(id)}
+                onClick={handleClickRemoveBook}
+                data-book-id={id}
               >
                 <TrashIcon className="text-red-500 w-4 h-4" />
               </button>
@@ -71,6 +84,12 @@ function SavedBooksList({ className, ...props }: Props) {
           </Link>
         );
       })}
+
+      <RemoveBookDialog
+        open={!!removingBookId}
+        onCancel={() => setRemovingBookId(null)}
+        onConfirm={handleConfirmRemoveDialog}
+      />
     </div>
   );
 }

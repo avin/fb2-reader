@@ -1,0 +1,53 @@
+.layout {
+  display: flex;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(#000, 0.25);
+  transition: all 0.2s ease-in-out;
+
+  @mixin active {
+    opacity: 1;
+
+    & > div {
+      transform: scale(1);
+      transition: all 0.2s linear;
+    }
+  }
+
+  @mixin inactive {
+    opacity: 0;
+
+    & > div {
+      transform: scale(0.85);
+      transition: all 0.2s linear;
+    }
+  }
+
+  @include inactive;
+
+  &.enter {
+    @include inactive;
+  }
+
+  &.enterActive {
+    @include active;
+  }
+
+  &.enterDone {
+    @include active;
+  }
+
+  &.exit {
+    @include active;
+  }
+
+  &.exitActive {
+    @include inactive;
+  }
+}
