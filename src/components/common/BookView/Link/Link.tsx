@@ -1,5 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
+import { usePopper } from 'react-popper';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import cn from 'clsx';
+import styles from './Link.module.scss';
 
 interface Props extends React.ComponentPropsWithoutRef<'a'> {
   tooltipClassName: string;
@@ -9,6 +12,14 @@ interface Props extends React.ComponentPropsWithoutRef<'a'> {
 function Link({ attributes, className, tooltipClassName, ...props }: Props) {
   const [isHovered, setIsHovered] = useState(false);
   const [content, setContent] = useState('');
+  const [referenceElement, setReferenceElement] = useState<any>(null);
+  const popperElementRef = useRef<any>(null);
+  const [popperElement, setPopperElement] = useState<any>(null);
+  const { styles: popperStyles, attributes: popperAttributes } = usePopper(
+    referenceElement,
+    popperElement,
+    {},
+  );
 
   const data = useMemo(() => {
     const hrefKey = Object.keys(attributes[':@']).find((i) => i.endsWith(':href'));
@@ -52,6 +63,7 @@ function Link({ attributes, className, tooltipClassName, ...props }: Props) {
         href={data.href}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        ref={setReferenceElement}
         {...(isExternalLink
           ? {
               target: '_blank',
@@ -61,18 +73,23 @@ function Link({ attributes, className, tooltipClassName, ...props }: Props) {
       >
         {data.text}
       </a>
-      {isHovered && !isExternalLink && (
-        <div
-          className={tooltipClassName}
-          style={{
-            position: 'absolute',
-            border: '1px solid black',
-            padding: '10px',
-            backgroundColor: 'white',
-          }}
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      )}
+
+      <TransitionGroup>
+        {isHovered && !isExternalLink && (
+          <CSSTransition timeout={100} unmountOnExit classNames={styles} nodeRef={popperElementRef}>
+            <div
+              className={cn(styles.tooltip, tooltipClassName)}
+              ref={(v) => {
+                setPopperElement(v);
+                popperElementRef.current = v;
+              }}
+              style={popperStyles.popper}
+              {...popperAttributes.popper}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          </CSSTransition>
+        )}
+      </TransitionGroup>
     </>
   );
 }

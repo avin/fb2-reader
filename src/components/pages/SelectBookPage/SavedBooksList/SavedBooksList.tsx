@@ -46,7 +46,7 @@ function SavedBooksList({ className, ...props }: Props) {
           <Link
             to={routes.viewBook.replace(':id', id)}
             key={id}
-            className="flex overflow-hidden border border-gray-300 hover:border-gray-500 bg-white rounded-md space-x-2 transition"
+            className="flex overflow-hidden border border-gray-300 hover:border-gray-500 rounded-md space-x-2 transition bg-white"
           >
             <div className="flex p-2 flex-1">
               <div className="flex w-[50px] max-h-[100px] h-full">

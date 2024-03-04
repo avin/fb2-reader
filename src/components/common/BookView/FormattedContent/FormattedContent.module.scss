@@ -77,10 +77,16 @@
   }
 }
 .linkTooltip {
+  z-index: 10;
   position: absolute;
-  padding: 10px;
-  border: 1px solid black;
+  width: 75%;
+  max-width: 600px;
+  padding: 8px 24px;
+  border: 1px solid var(--gray-500);
+  border-radius: 0.25rem;
   background-color: white;
+  box-shadow: 0 0 10px var(--gray-400);
+  font-weight: 400;
 
   .title {
     padding: 0;

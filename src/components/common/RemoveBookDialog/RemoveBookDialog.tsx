@@ -11,7 +11,7 @@ interface Props {
 function RemoveBookDialog({ open, onConfirm, onCancel }: Props) {
   return (
     <ModalWindow open={open} onClose={onCancel}>
-      <div className="rounded-xl overflow-hidden">
+      <div className="rounded-xl overflow-hidden shadow-xl">
         {/*<div className="flex bg-white px-4 pb-4 pt-5">*/}
         <div className="flex bg-white px-4 pt-5 p-6 pb-4">
           <div className="rounded-full bg bg-red-100 size-12 mr-4 flex justify-center items-center">
