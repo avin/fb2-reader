@@ -22,7 +22,7 @@ function RemoveBookDialog({ open, onConfirm, onCancel }: Props) {
             <div className="mt-2 text-sm text-gray-500">Are you sure want to remove this book?</div>
           </div>
         </div>
-        <div className="flex justify-end bg-slate-50 px-4 py-3">
+        <div className="flex justify-end bg-gray-50 px-4 py-3">
           <button
             type="button"
             onClick={onCancel}

@@ -5,7 +5,7 @@ $breakpoints: (
 
 // Usage Example:
 // To use a color from the palette, use map-get like this:
-// color: map-get(map-get($colors, 'slate'), 100);
+// color: map-get(map-get($colors, 'gray'), 100);
 $colors: (
   slate: (
     50: #f8fafc,

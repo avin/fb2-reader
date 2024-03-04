@@ -77,9 +77,9 @@ function SelectBookPage() {
       <button
         type="button"
         onClick={() => inputFileRef.current!.click()}
-        className="border-2 border-dashed border-slate-500 rounded-3xl p-8 flex flex-col items-center w-full max-w-2xl my-8"
+        className="border-2 border-dashed border-gray-500 rounded-3xl p-8 flex flex-col items-center w-full max-w-2xl my-8"
       >
-        <BookOpenIcon className="w-8 mb-2 text-slate-500" />
+        <BookOpenIcon className="w-8 mb-2 text-gray-500" />
         <p className="mt-1 text-lg text-gray-500">
           <span className="text-blue-600">Upload a book file</span> or drag and drop
         </p>

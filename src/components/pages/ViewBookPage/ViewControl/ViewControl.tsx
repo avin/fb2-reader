@@ -75,7 +75,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
       >
         <div
           className={cn(
-            'absolute z-10 top-0 w-full flex justify-between bg-white shadow-lg text-slate-500 items-center h-12',
+            'absolute z-10 top-0 w-full flex justify-between bg-white shadow-lg text-gray-500 items-center h-12',
             styles.menuBar,
             className,
           )}
@@ -103,7 +103,7 @@ function ViewControl({ bookMeta, className, ...props }: Props) {
               </div>
             </div>
 
-            <div className="h-10 w-[1px] bg-slate-300 ml-4 mr-2" />
+            <div className="h-10 w-[1px] bg-gray-300 ml-4 mr-2" />
 
             <button type="button" onClick={handleClickBack} className="size-8 hover:text-red-500">
               <XMarkIcon />

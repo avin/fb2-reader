@@ -113,7 +113,7 @@ function BookView({ book, bookId, className, ...props }: Props) {
         ref={bookElRef}
         {...props}
       >
-        <div className="mb-12 pb-12 border-b border-slate-400 p-5">
+        <div className="mb-12 pb-12 border-b border-gray-400 p-5">
           <BookDescription content={book} />
         </div>
 

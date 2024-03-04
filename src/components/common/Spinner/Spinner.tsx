@@ -13,7 +13,7 @@ const MIN_SIZE = 10;
 const STROKE_WIDTH = 4;
 const MIN_STROKE_WIDTH = 16;
 
-const TRACK_COLOR = colors.slate['200'];
+const TRACK_COLOR = colors.gray['200'];
 const HEAD_COLOR = colors.blue['600'];
 
 const getViewBox = (strokeWidth) => {

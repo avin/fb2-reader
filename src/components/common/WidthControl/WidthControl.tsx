@@ -101,16 +101,16 @@ function WidthControl({ onChange, initialValue, className, ...props }: Props) {
       )}
       ref={sliderRef}
     >
-      <div className="relative w-full h-0.5 bg-slate-500">
+      <div className="relative w-full h-0.5 bg-gray-500">
         <div
-          className="absolute z-10 -translate-x-1/2 -translate-y-1/2 transform border-2 border-slate-500 bg-white rounded-full size-3 transition-size group-hover:size-5"
+          className="absolute z-10 -translate-x-1/2 -translate-y-1/2 transform border-2 border-gray-500 bg-white rounded-full size-3 transition-size group-hover:size-5"
           style={{ left: `${position * 100}%` }}
         />
         {['0%', '90%', '100%'].map((leftPosition, idx) => {
           return (
             <div
               key={String(idx)}
-              className="absolute bg-slate-500 w-[2px] h-2 -translate-y-1/2 top-[50%]"
+              className="absolute bg-gray-500 w-[2px] h-2 -translate-y-1/2 top-[50%]"
               style={{
                 left: leftPosition,
               }}
