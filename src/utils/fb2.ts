@@ -76,7 +76,6 @@ export async function getBookMetadata(bookObj: any): Promise<BookMeta> {
     });
 
   return {
-    id: '',
     genres,
     authors,
     bookTitle,
