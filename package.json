@@ -11,8 +11,7 @@
     "prettier": "prettier --ignore-unknown --write **",
     "preview": "vite preview",
     "storybook": "cross-env storybook dev --port 8889 --no-open --https --ssl-cert node_modules/localhost-certs/files/server.crt --ssl-key node_modules/localhost-certs/files/server.key",
-    "build-storybook": "storybook build",
-    "heroku-postbuild": "npm run build"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
