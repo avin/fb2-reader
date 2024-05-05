@@ -81,7 +81,7 @@ function SelectBookPage() {
       >
         <BookOpenIcon className="w-8 mb-2 text-gray-500" />
         <p className="mt-1 text-lg text-gray-500">
-          <span className="text-blue-600">Upload a book file</span> or drag and drop
+          <span className="text-blue-600">Upload a book file</span> or drag and drop+++
         </p>
         <input
           type="file"
