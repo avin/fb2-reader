@@ -28,3 +28,5 @@ dist-ssr
 !.idea/file.template.settings.xml
 
 .delivery.config.cjs
+
+deploy.tar
